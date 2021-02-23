@@ -28,7 +28,7 @@
 
 </head>
 <body>
-	<h1>${	principal}</h1>
+	<%-- <h1>${	principal}</h1> --%>
 	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
 		<a class="navbar-brand" href="/">HOME</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -46,6 +46,7 @@
 				</c:when>
 				<c:otherwise>
 					<ul class="navbar-nav">
+						<li class="nav-item"><a class="nav-link" href="/sale/saleList">판매현황</a></li>
 						<li class="nav-item"><a class="nav-link" href="/board/saveForm">글쓰기</a></li> 
 						<li class="nav-item"><a class="nav-link" href="/user/updateForm">회원정보</a></li>
 						<li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
