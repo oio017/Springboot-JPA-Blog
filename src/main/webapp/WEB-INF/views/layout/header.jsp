@@ -23,8 +23,13 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+
+
 
 </head>
 <body>
@@ -40,15 +45,104 @@
 			<c:choose>
 				<c:when test="${empty principal }">
 					<ul class="navbar-nav">
-						<li class="nav-item"><a class="nav-link" href="/auth/loginForm">로그인</a></li>
-						<li class="nav-item"><a class="nav-link" href="/auth/joinForm">회원가입</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="/auth/loginForm">로그인</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="/auth/joinForm">회원가입</a></li>
 					</ul>
 				</c:when>
 				<c:otherwise>
 					<ul class="navbar-nav">
-						<li class="nav-item"><a class="nav-link" href="/sale/saleList">판매현황</a></li>
-						<li class="nav-item"><a class="nav-link" href="/board/saveForm">글쓰기</a></li> 
-						<li class="nav-item"><a class="nav-link" href="/user/updateForm">회원정보</a></li>
+
+<div class="bd-example">
+  <div class="btn-group">
+    <button type="button" class="btn btn-primary">기기정보 관리</button>
+    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <div class="dropdown-menu">
+			<a class="dropdown-item" href="/deviceInfo/register">기기타입 등록</a>
+			<a class="dropdown-item" href="/deviceInfo/machineRegister">기기 타입별 상품 등록</a>
+			<a class="dropdown-item" href="/deviceInfo/machineRegister">자판기 등록</a>
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item" href="/deviceInfo/list">기기타입 리스트</a>
+			<a class="dropdown-item" href="/deviceInfo/machineRegister">기기 타입별 상품등록 리스트</a>
+			<a class="dropdown-item" href="/deviceInfo/machineList">자판기 등록 리스트</a> 
+    </div>
+  </div><!-- /btn-group -->
+  
+  <div class="btn-group">
+    <button type="button" class="btn btn-secondary">상품정보 관리</button>
+    <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <div class="dropdown-menu">
+	<a class="dropdown-item" href="/deviceInfo/register">상품등록</a>
+      <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="/deviceInfo/list">상품 형환보기</a>
+    </div>
+  </div><!-- /btn-group -->
+  
+  
+  <div class="btn-group">
+    <button type="button" class="btn btn-success">운영 현황</button>
+    <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <div class="dropdown-menu">
+	<a class="dropdown-item" href="/sale/saleList">자판기별 판매현황</a> <!-- 기기별,날짜별 판매현황. 세부(결재건당 상세내역  -->
+	<a class="dropdown-item" href="/deviceInfo/list">자판기 현황</a> <!-- 자판기별  슬롯현황(걸림, 양호, 모터에러, 제고) -->
+	<a class="dropdown-item" href="/deviceInfo/list">제품별 판매현황</a> <!-- 제품별, 날짜별 판매현황 -->
+    </div>
+  </div><!-- /btn-group -->
+  <div class="btn-group">
+    <button type="button" class="btn btn-info">Info</button>
+    <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Action</a>
+      <a class="dropdown-item" href="#">Another action</a>
+      <a class="dropdown-item" href="#">Something else here</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="#">Separated link</a>
+    </div>
+  </div><!-- /btn-group -->
+  <div class="btn-group">
+    <button type="button" class="btn btn-warning">Warning</button>
+    <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Action</a>
+      <a class="dropdown-item" href="#">Another action</a>
+      <a class="dropdown-item" href="#">Something else here</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="#">Separated link</a>
+    </div>
+  </div><!-- /btn-group -->
+  <div class="btn-group">
+    <button type="button" class="btn btn-danger">Danger</button>
+    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Action</a>
+      <a class="dropdown-item" href="#">Another action</a>
+      <a class="dropdown-item" href="#">Something else here</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="#">Separated link</a>
+    </div>
+  </div><!-- /btn-group -->
+</div>
+
+
+
+
+						<li class="nav-item"><a class="nav-link"
+							href="/board/saveForm">글쓰기</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="/user/updateForm">회원정보</a></li>
 						<li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
 					</ul>
 				</c:otherwise>
@@ -56,4 +150,6 @@
 
 		</div>
 	</nav>
+
+
 	<br />
