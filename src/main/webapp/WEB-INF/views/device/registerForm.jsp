@@ -74,6 +74,6 @@
 	});
 	
 </script>
-<script src="/js/deviceInfo.js"></script>
+<script src="/js/deviceType.js"></script>
 <%@ include file="../layout/footer.jsp"%>
 

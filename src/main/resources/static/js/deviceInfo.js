@@ -33,7 +33,7 @@ let index = {
 			dataType: "json" // 응답에 대한 DataType 지정
 		}).done(function(resp) {
 			alert("글쓰기가 완료 되었습니다.");
-			location.href = "/deviceInfo/list";
+			location.href = "/deviceType/list";
 
 		}).fail(function(error) {
 			alert(JSON.stringify(error));

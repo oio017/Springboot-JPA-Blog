@@ -1,5 +1,6 @@
 package com.cos.blog.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReplySaveRequestDto {
-	private int	 userId;
-	private int	 boardId;
-	private String content;	
+public class PaymentInfo {
+		private List<OrderItem> orderItems;
+		private PaymentDetail payment;
 }
+

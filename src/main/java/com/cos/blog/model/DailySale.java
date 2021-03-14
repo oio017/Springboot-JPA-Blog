@@ -11,9 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -32,7 +29,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-public class DailySaleInfo {
+public class DailySale {
 	@Id // primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -44,10 +41,16 @@ public class DailySaleInfo {
 	// date : 20210301
 	@Column(nullable=false, length=20)
 	private String date;
-	
+
+	@JsonIgnoreProperties({"vendingMachine"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
+	@OneToMany(mappedBy = "vendingMachine", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OrderBy("id desc")
+	private List<Payment> payment;
+
+	// 당일 슬롯에 연결된 정보는 PayResult내 orderItems 참
 	// 슬롯별 당일 연결된 SaleProduct 정보 : [saleProductId, ..... ]
-	@Column(nullable=false, length=500)
-	private String saleProductIdPerSlot ;
+	//@Column(nullable=false, length=500)
+	//private String saleProductIdPerSlot ;
 	
 	// saleCntPerSlot = [100, 54, …..] 	# 슬롯당 판매수량
 	@Column(nullable=false, length=500)

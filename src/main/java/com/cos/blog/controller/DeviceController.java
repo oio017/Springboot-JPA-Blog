@@ -28,45 +28,45 @@ public class DeviceController {
 	private VendingMachineService vendingMachineService;
 
 	
-		// deviceInfo
-		@GetMapping("/deviceInfo/register")
+		// deviceType
+		@GetMapping("/deviceType/register")
 		public String register() {
-			return "deviceInfo/registerForm";
+			return "device/registerForm";
 		}
 		
-		@GetMapping("/deviceInfo/list")
+		@GetMapping("/deviceType/list")
 		public String machineList(Model model, @PageableDefault(size=2, sort="id", direction=Sort.Direction.DESC) Pageable pageable) { 
-			model.addAttribute("deviceInfos", devcieService.deviceInfoList(pageable)); // Collection Data
+			model.addAttribute("deviceTypes", devcieService.deviceTypeList(pageable)); // Collection Data
 			
-			return "deviceInfo/deviceInfoList";
+			return "device/deviceTypeList";
 		}
 		
-		@GetMapping("/deviceInfo/{id}")
+		@GetMapping("/deviceType/{id}")
 		public String findById(@PathVariable int id, Model model){
-			model.addAttribute("deviceInfo",  devcieService.detail(id));
-			
-			return "deviceInfo/deviceInfoDetail";
+			model.addAttribute("deviceType",  devcieService.detail(id));
+		
+			return "device/deviceTypeDetail";
 		}
 		
 		//vending Machine
-		@GetMapping("/deviceInfo/machineRegister")
+		@GetMapping("/deviceType/machineRegister")
 		public String vendingMachineRegister(Model model) {
-			model.addAttribute("deviceInfos",  deviceRepository.findAll());
-			return "deviceInfo/machineRegisterForm";
+			model.addAttribute("deviceTypes",  deviceRepository.findAll());
+			return "device/machineRegisterForm";
 		}
 		
-		@GetMapping("/deviceInfo/machineList")
+		@GetMapping("/deviceType/machineList")
 		public String vendingMachineList(Model model, @PageableDefault(size=2, sort="id", direction=Sort.Direction.DESC) Pageable pageable) { 
 			model.addAttribute("vendingMachines", vendingMachineService.vendingMachineList(pageable)); // Collection Data
 			
-			return "deviceInfo/machineList";
+			return "device/machineList";
 		}
 		
-		@GetMapping("/deviceInfo/machine/{id}")
+		@GetMapping("/deviceType/machine/{id}")
 		public String findMachineById(@PathVariable int id, Model model){
 			model.addAttribute("vendingMachine",  vendingMachineService.detail(id));
 			
-			return "deviceInfo/machineDetail";
+			return "device/machineDetail";
 		}
 		
 		

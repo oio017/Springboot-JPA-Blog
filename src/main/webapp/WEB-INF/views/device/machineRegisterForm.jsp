@@ -22,10 +22,10 @@
 			<div class="input-group-prepend">
 				<label class="input-group-text" for="deviceStatus">모델이름</label>
 			</div>
-			<select class="custom-select" id="deviceInfo">
+			<select class="custom-select" id="deviceType">
 				<option selected>Choose...</option>
-				<c:forEach var="deviceInfo" items="${deviceInfos}">
-					<option value="{deviceInfo.modelName}">${deviceInfo.modelName}</option>
+				<c:forEach var="deviceType" items="${deviceTypes}">
+					<option value="{deviceType.modelName}">${deviceType.modelName}</option>
 				</c:forEach>
 			</select>
 		</div>
@@ -80,17 +80,17 @@
 				<hr />
 
 				<!--열 자판기 첫번쨰 열 -->
-				<c:forEach var="row" items="${deviceInfos}">
+				<c:forEach var="row" items="${deviceTypes}">
 					<div class="form-group row">
 
 						<!-- 각열에 비치된 컬럼 -->
-						<c:forEach var="col" items="${deviceInfos}">
+						<c:forEach var="col" items="${deviceTypes}">
 							<div class="col-xs-2">
 								<label for="ex3">Slot3</label> <select class="custom-select"
-									id="deviceInfo">
+									id="deviceType">
 									<option selected>Choose...</option>
-									<c:forEach var="deviceInfo" items="${deviceInfos}">
-										<option value="{deviceInfo.modelName}">${deviceInfo.modelName}</option>
+									<c:forEach var="deviceType" items="${deviceTypes}">
+										<option value="{deviceType.modelName}">${deviceType.modelName}</option>
 									</c:forEach>
 								</select>
 							</div>
@@ -110,7 +110,7 @@
 
 </div>
 <!-- <script>
-	$("#deviceInfo")
+	$("#deviceType")
 			.change(
 					function() {
 						if ($(this).val() == 1) {
@@ -126,6 +126,6 @@
 
 					});
 </script> -->
-<script src="/js/deviceInfo.js"></script>
+<script src="/js/deviceType.js"></script>
 <%@ include file="../layout/footer.jsp"%>
 

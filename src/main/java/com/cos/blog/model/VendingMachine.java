@@ -43,7 +43,7 @@ public class VendingMachine {
 	
 	@ManyToOne
 	@JoinColumn(name="deviceId")
-	private DeviceInfo deviceInfo;
+	private DeviceType deviceType;
 	
 	@Column(nullable=false, length=50)
 	private String merchantCode ;
@@ -73,7 +73,7 @@ public class VendingMachine {
 	@ColumnDefault("1")
 	private int internet;
 	
-	@Enumerated(EnumType.STRING) // DB에 string으로 알려줌.
+	@Enumerated(EnumType.STRING) // STOP, RUNNING, BROKEN
 	private StatusType status; 
 	
 	@Column(nullable=false, length=300)
@@ -81,21 +81,16 @@ public class VendingMachine {
 		
 	// 슬롯별 현상태 : 0(정상), 1(jam), 2(moter 고장) -> [0,0,1, 2 ....]
 	@Column(nullable=false, length=500)
-	private String slotStatusPerSlot ;
+	private String statusPerSlot ;
 	
 	// 슬롯별 현재 재고수량 [1, 23, 22, ....]
 	@Column(nullable=false, length=500)
-	private String StockCntPerSlot ;
-
-	// 슬롯별 현재 연결된 SaleProduct 정보 : [saleProductId, ..... ]
-	@Column(nullable=false, length=500)
-	private String saleProductIdPerSlot ;
+	private String stockPerSlot ;
 	
-	@JsonIgnoreProperties({"deviceList"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
-	// cascade 옵션을 지정하여 해당 개시글이 삭제된 경우 해당 댓글을 모두 자동삭제하도록 한다.
+	@JsonIgnoreProperties({"vendingMachine"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
 	@OneToMany(mappedBy = "vendingMachine", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@OrderBy("id desc")
-	private List<DailySaleInfo> dailySaleInfos;
+	private List<SaleProduct> SaleProduct;
 	
 	
 	@CreationTimestamp

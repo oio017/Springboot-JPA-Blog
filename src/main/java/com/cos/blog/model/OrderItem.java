@@ -31,46 +31,41 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-public class SaleProduct {
+public class OrderItem {
 
 	@Id // primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
-	@ManyToOne
-	@JoinColumn(name="vendingMachineId")
-	private VendingMachine vendingMachine;
 	
-	@ColumnDefault("1")
-	private int categoryId;
-
+	@ManyToOne
+	@JoinColumn(name="paymentId")
+	private Payment payment;
+	
 	@ColumnDefault("0")
-	private int discontinued;
+	private int discount;
+	
+	@ColumnDefault("0")
+	private int dispensingFailItems;
+	
+	@ColumnDefault("0")
+	private int dispensingOkItems;
+	
+	@ColumnDefault("0")
+	private int dispensingStatus;
 	
 	@Column(length = 20)
-	private String imageRes;
-	
-	@Column(length = 100)
-	private String imageUrl;
-
-	@Column(nullable = false, length = 100)
-	private String productName;
-	
-	@Column(nullable = false, length = 10)
-	private String quantityPerUnit;
+	private String orderId;
 	
 	@ColumnDefault("0")
-	private int reorderLevel;
+	private int productId;
 	
-	@ColumnDefault("1000")
+	@ColumnDefault("0")
+	private int quantity;
+	
+	@ColumnDefault("0")
+	private int slotId;
+	
+	@ColumnDefault("0")
 	private int unitPrice;
 	
-	@ColumnDefault("999")
-	private int unitsInStock;
-	
-	@ColumnDefault("1")
-	private int unitsOnOrder;
-	    
-	@Lob
-	private String content;
 }
