@@ -60,13 +60,13 @@ public class DeviceType {
 	@Lob
 	private String content;
 
-	// mappedBy 연관관계의 주인이 아니다. (난 FK가 아니에요)
-	// EAGER 전략이므로 Select해서 함께 DB로부터 가져옴.
-	@JsonIgnoreProperties({"deviceType"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
-	// cascade 옵션을 지정하여 해당 개시글이 삭제된 경우 해당 댓글을 모두 자동삭제하도록 한다.
-	@OneToMany(mappedBy = "deviceType", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	@OrderBy("id desc")
-	private List<VendingMachine> vendingMachines;
+//	// mappedBy 연관관계의 주인이 아니다. (난 FK가 아니에요)
+//	// EAGER 전략이므로 Select해서 함께 DB로부터 가져옴.
+//	@JsonIgnoreProperties({"deviceType", "vendingMachine"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
+//	// cascade 옵션을 지정하여 해당 개시글이 삭제된 경우 해당 댓글을 모두 자동삭제하도록 한다.
+//	@OneToMany(mappedBy = "deviceType", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+//	@OrderBy("id desc")
+//	private List<VendingMachine> vendingMachines;
 
 	@CreationTimestamp
 	private Timestamp createDate;

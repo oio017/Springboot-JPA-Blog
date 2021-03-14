@@ -42,10 +42,10 @@ public class DailySale {
 	@Column(nullable=false, length=20)
 	private String date;
 
-	@JsonIgnoreProperties({"vendingMachine"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
-	@OneToMany(mappedBy = "vendingMachine", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@JsonIgnoreProperties({"dailySale"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
+	@OneToMany(mappedBy = "dailySale", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@OrderBy("id desc")
-	private List<Payment> payment;
+	private List<Payment> payments;
 	
 	// saleCntPerSlot = [100, 54, …..] 	# 슬롯당 판매수량
 	@Column(length=500)

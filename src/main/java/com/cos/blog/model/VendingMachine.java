@@ -86,7 +86,7 @@ public class VendingMachine {
 	@Column(length=500)
 	private String stockPerSlot ;
 	
-	@JsonIgnoreProperties({"vendingMachine"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
+	@JsonIgnoreProperties({"vendingMachine", "deviceType"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
 	@OneToMany(mappedBy = "vendingMachine", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@OrderBy("id desc")
 	private List<SaleProduct> SaleProduct;

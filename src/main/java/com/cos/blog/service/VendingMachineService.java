@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.blog.model.Board;
+import com.cos.blog.model.DailySale;
 import com.cos.blog.model.DeviceType;
 import com.cos.blog.model.VendingMachine;
 import com.cos.blog.repository.DeviceRepository;
@@ -43,5 +44,14 @@ public class VendingMachineService {
 					return new IllegalArgumentException("해당 자판기 정보를 찾을 수가 없습니다.");
 				});
 	}
+	
+	@Transactional(readOnly = true)
+	public VendingMachine findByMerchantName(String name) {
+		return vendingMachineRepository.findByMerchantName(name)
+				.orElseThrow(()->{
+					return new IllegalArgumentException("해당 자판기 정보를 찾을 수가 없습니다.");
+				});
+	}
+	
 	
 }

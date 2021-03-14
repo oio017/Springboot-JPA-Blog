@@ -1,6 +1,5 @@
 package com.cos.blog.service;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.blog.dto.DailySaleSaveRequestDto;
 import com.cos.blog.model.DailySale;
-import com.cos.blog.model.Payment;
 import com.cos.blog.model.VendingMachine;
 import com.cos.blog.repository.DailySaleRepository;
 import com.cos.blog.repository.OrderItemRepository;
@@ -32,6 +30,14 @@ public class VendingStatusService {
 	@Autowired // DI : Dependency Injection
 	private OrderItemRepository orderItemRepository;
 	
+	
+	@Transactional(readOnly = true)
+	public DailySale findByVendingMachineIdAndDate(int vendingMachineId, String date) {
+		return dailySaleRepository.findByVendingMachineIdAndDate(vendingMachineId, date)
+				.orElseThrow(()->{
+					return new IllegalArgumentException("해당 일일 판매정보를 찾을 수가 없습니다.");
+				});
+	}
 	
 	@Transactional // DB(CRUD) 모든 행위가  정상적으로 처리되어야 성공처리. 
 	public void dailySaleSave(DailySaleSaveRequestDto dailySaleSaveRequestDto) {
@@ -60,6 +66,7 @@ public class VendingStatusService {
 			//3. PaymentRepository
 			System.out.println("paymentInfo : " + payment.toString());
 			payment.getPayment().setVendingMachine(vendingMachine);
+			payment.getPayment().setDailySale(dailySale);
 			paymentRepository.save(payment.getPayment());
 			
 			
