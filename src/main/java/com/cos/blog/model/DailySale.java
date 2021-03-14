@@ -48,15 +48,15 @@ public class DailySale {
 	private List<Payment> payment;
 	
 	// saleCntPerSlot = [100, 54, …..] 	# 슬롯당 판매수량
-	@Column(nullable=false, length=500)
+	@Column(length=500)
 	private String saleCntPerSlot ;
 	
 	// jamCntPerSlot = [1, 0, 0, 0 ….]	# 슬롯당 걸림발생 횟수
-	@Column(nullable=false, length=500)
+	@Column(length=500)
 	private String jamCntPerSlot ;
 	
 	// MotorErrorCntPerSlot = [1, 0, 0, 0 ….]	# 슬롯당 모터 오류 발생 횟수
-	@Column(nullable=false, length=500)
+	@Column(length=500)
 	private String motorErrorCntPerSlot ;
 	
 	// totalAccount : 100000

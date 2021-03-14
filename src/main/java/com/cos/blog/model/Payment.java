@@ -53,7 +53,7 @@ public class Payment {
 	private long orderId;
 
 	// date : "2021/02/17 7:48" "Mar 11, 2021 09:17:45"
-	@Column(nullable = false, length = 20)
+	@Column(nullable = false, length = 50)
 	private String paymentDate;
 
 	@ColumnDefault("0") // 결재 실패에 대한 원인과 슬롯 정보

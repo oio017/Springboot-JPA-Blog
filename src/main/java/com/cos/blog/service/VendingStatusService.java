@@ -54,6 +54,7 @@ public class VendingStatusService {
 		DailySale dailySale = new DailySale();
 		dailySale.setVendingMachine(vendingMachine);
 		dailySale.setDate(dailySaleSaveRequestDto.getDate());
+		dailySaleRepository.save(dailySale);
 		
 		dailySaleSaveRequestDto.getPayments().forEach(payment ->{
 			//3. PaymentRepository
