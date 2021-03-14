@@ -40,6 +40,9 @@ public class VendingMachine {
 	@Id // primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
+	@Column(nullable=false, length=50)
+	private String merchantName ;
 	
 	@ManyToOne
 	@JoinColumn(name="deviceId")
@@ -47,9 +50,6 @@ public class VendingMachine {
 	
 	@Column(nullable=false, length=50)
 	private String merchantCode ;
-	
-	@Column(nullable=false, length=50)
-	private String merchantName ;
 	
 	@Column(nullable=false, length=50)
 	private String ip ;
@@ -68,10 +68,9 @@ public class VendingMachine {
 	
 	@Column(nullable=false, length=50)
 	private String consolePassword ;
-	
-	// 0(private), 1(public)
-	@ColumnDefault("1")
-	private int internet;
+		
+	@Enumerated(EnumType.STRING) // ENABLE, DISABLE
+	private StatusType internet;
 	
 	@Enumerated(EnumType.STRING) // STOP, RUNNING, BROKEN
 	private StatusType status; 
@@ -80,11 +79,11 @@ public class VendingMachine {
 	private String location ;
 		
 	// 슬롯별 현상태 : 0(정상), 1(jam), 2(moter 고장) -> [0,0,1, 2 ....]
-	@Column(nullable=false, length=500)
+	@Column( length=500)
 	private String statusPerSlot ;
 	
 	// 슬롯별 현재 재고수량 [1, 23, 22, ....]
-	@Column(nullable=false, length=500)
+	@Column(length=500)
 	private String stockPerSlot ;
 	
 	@JsonIgnoreProperties({"vendingMachine"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)

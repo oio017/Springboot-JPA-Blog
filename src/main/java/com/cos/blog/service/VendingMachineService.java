@@ -11,10 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.blog.model.Board;
 import com.cos.blog.model.DeviceType;
+import com.cos.blog.model.VendingMachine;
 import com.cos.blog.repository.DeviceRepository;
 import com.cos.blog.repository.VendingMachineRepository;
-
-
 
 /* 서비스에 대한 설명
  *		1. 트랜잭션 관리
@@ -28,23 +27,21 @@ public class VendingMachineService {
 	private VendingMachineRepository vendingMachineRepository;
 	
 	@Transactional // DB(CRUD) 모든 행위가  정상적으로 처리되어야 성공처리. 
-	public void save(DeviceType deviceType) {
-		vendingMachineRepository.save(deviceType);
+	public void save(VendingMachine vendingMachine) {
+		vendingMachineRepository.save(vendingMachine);
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<DeviceType> vendingMachineList(Pageable pageable){
+	public Page<VendingMachine> vendingMachineList(Pageable pageable){
 		return vendingMachineRepository.findAll(pageable);
 	}
 	
 	@Transactional(readOnly = true)
-	public DeviceType detail(int id) {
+	public VendingMachine detail(int id) {
 		return vendingMachineRepository.findById(id)
 				.orElseThrow(()->{
 					return new IllegalArgumentException("해당 자판기 정보를 찾을 수가 없습니다.");
 				});
 	}
-	
-
 	
 }

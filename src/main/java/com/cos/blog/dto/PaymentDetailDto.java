@@ -1,6 +1,5 @@
 package com.cos.blog.dto;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentDetail {
+public class PaymentDetailDto {
 	private int amount;
 	private long orderId;
 	private String paymentDate;
+	private String paymentError;
 	private int paymentErrorCode;
 	private int paymentMethodId;
 	private int refund;

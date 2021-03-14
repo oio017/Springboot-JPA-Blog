@@ -1,5 +1,7 @@
 package com.cos.blog.service;
 
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -54,11 +56,17 @@ public class DeviceService {
 	}
 	
 	@Transactional(readOnly = true)
+	public List<DeviceType> findAllDeviceType(){
+		return deviceRepository.findAll();
+	}
+	
+	@Transactional(readOnly = true)
 	public DeviceType detail(int id) {
 		return deviceRepository.findById(id)
 				.orElseThrow(()->{
 					return new IllegalArgumentException("해당 디바이스 모델을 찾을 수가 없습니다.");
 				});
 	}
+
 	
 }

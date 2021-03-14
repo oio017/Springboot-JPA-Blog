@@ -35,7 +35,7 @@ public class DailySale {
 	private int id;
 	
 	@ManyToOne
-	@JoinColumn(name="deviceListId")
+	@JoinColumn(name="vendingMachineId")
 	private VendingMachine vendingMachine;
 	
 	// date : 20210301
@@ -46,11 +46,6 @@ public class DailySale {
 	@OneToMany(mappedBy = "vendingMachine", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@OrderBy("id desc")
 	private List<Payment> payment;
-
-	// 당일 슬롯에 연결된 정보는 PayResult내 orderItems 참
-	// 슬롯별 당일 연결된 SaleProduct 정보 : [saleProductId, ..... ]
-	//@Column(nullable=false, length=500)
-	//private String saleProductIdPerSlot ;
 	
 	// saleCntPerSlot = [100, 54, …..] 	# 슬롯당 판매수량
 	@Column(nullable=false, length=500)

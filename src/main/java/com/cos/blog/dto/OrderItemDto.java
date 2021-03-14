@@ -1,6 +1,5 @@
 package com.cos.blog.dto;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItem {
+public class OrderItemDto {
 	private int discount;
 	private int dispensingFailItems;
 	private int dispensingOkItems;

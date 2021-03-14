@@ -6,8 +6,8 @@
 <div class="container">
 	<form action="/action_page.php">
 		<div class="form-group">
-			<label for="username">모델 이름</label> <input type="text"
-				value="${deviceType.modelName}" class="form-control"
+			<label for="username">Merchant Name</label> <input type="text"
+				value="${vendingMachine.merchantName}" class="form-control"
 				placeholder="Enter modelName" id="modelName" readonly>
 		</div>
 		<div class="form-group">

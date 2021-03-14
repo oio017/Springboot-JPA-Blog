@@ -49,11 +49,8 @@ public class Payment {
 	// refundResult == true)
 	private int amount;
 
-	@Column(nullable = false, length = 20)
-	private String orderId;
-
-	@Column(nullable = false, length = 20)
-	private String transactionId;
+	@ColumnDefault("0")
+	private long orderId;
 
 	// date : "2021/02/17 7:48" "Mar 11, 2021 09:17:45"
 	@Column(nullable = false, length = 20)
@@ -62,7 +59,7 @@ public class Payment {
 	@ColumnDefault("0") // 결재 실패에 대한 원인과 슬롯 정보
 	// "Refund - Because a jam occurred, the refund was processed. [code: 09, cause:
 	// Jammed, slots: [23]]"
-	private int paymentError;
+	private String paymentError;
 
 	@ColumnDefault("0")
 	private int paymentErrorCode;
@@ -71,7 +68,7 @@ public class Payment {
 	private int paymentMethodId;
 
 	@ColumnDefault("0")
-	private int refundAmount;
+	private int refund;
 
 	@Column(nullable = false, length = 200) // 환불 실패 시 관련 내용
 	private String refundDesc;
@@ -86,6 +83,9 @@ public class Payment {
 	@ColumnDefault("0") // 판매된 제품 수량
 	private int salesItems;
 
+	@Column(nullable = false, length = 20)
+	private String transactionId;
+	
 	@JsonIgnoreProperties({ "payment" }) // 무한참조 방지 (참조 : https://getinthere.tistory.com/34)
 	@OneToMany(mappedBy = "payment", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
 	@OrderBy("id desc")

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.cos.blog.config.auth.PrincipalDetail;
 import com.cos.blog.repository.DeviceRepository;
@@ -20,10 +21,7 @@ public class DeviceController {
 
 	@Autowired
 	private DeviceService devcieService;
-	
-	@Autowired
-	private DeviceRepository deviceRepository;
-	
+		
 	@Autowired
 	private VendingMachineService vendingMachineService;
 
@@ -31,43 +29,44 @@ public class DeviceController {
 		// deviceType
 		@GetMapping("/deviceType/register")
 		public String register() {
-			return "device/registerForm";
+			System.out.println("dfdfwefefewfwef");
+			
+			return "device/typeRegister";
 		}
 		
 		@GetMapping("/deviceType/list")
-		public String machineList(Model model, @PageableDefault(size=2, sort="id", direction=Sort.Direction.DESC) Pageable pageable) { 
+		public String deviceTypeList(Model model, @PageableDefault(size=2, sort="id", direction=Sort.Direction.DESC) Pageable pageable) { 
 			model.addAttribute("deviceTypes", devcieService.deviceTypeList(pageable)); // Collection Data
 			
 			return "device/deviceTypeList";
 		}
 		
 		@GetMapping("/deviceType/{id}")
-		public String findById(@PathVariable int id, Model model){
+		public String deviceTypeFindById(@PathVariable int id, Model model){
 			model.addAttribute("deviceType",  devcieService.detail(id));
 		
 			return "device/deviceTypeDetail";
 		}
 		
 		//vending Machine
-		@GetMapping("/deviceType/machineRegister")
+		@GetMapping("/vendingMachine/register")
 		public String vendingMachineRegister(Model model) {
-			model.addAttribute("deviceTypes",  deviceRepository.findAll());
+			model.addAttribute("deviceTypes",  devcieService.findAllDeviceType());
 			return "device/machineRegisterForm";
 		}
 		
-		@GetMapping("/deviceType/machineList")
+		@GetMapping("/vendingMachine/list")
 		public String vendingMachineList(Model model, @PageableDefault(size=2, sort="id", direction=Sort.Direction.DESC) Pageable pageable) { 
 			model.addAttribute("vendingMachines", vendingMachineService.vendingMachineList(pageable)); // Collection Data
 			
 			return "device/machineList";
 		}
 		
-		@GetMapping("/deviceType/machine/{id}")
-		public String findMachineById(@PathVariable int id, Model model){
+		@GetMapping("/vendingMachine/{id}")
+		public String vendingMachineFindById(@PathVariable int id, Model model){
 			model.addAttribute("vendingMachine",  vendingMachineService.detail(id));
-			
+		
 			return "device/machineDetail";
 		}
-		
 		
 }

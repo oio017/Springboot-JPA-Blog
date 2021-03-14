@@ -53,8 +53,8 @@ public class OrderItem {
 	@ColumnDefault("0")
 	private int dispensingStatus;
 	
-	@Column(length = 20)
-	private String orderId;
+	@ColumnDefault("0")
+	private  long orderId;
 	
 	@ColumnDefault("0")
 	private int productId;

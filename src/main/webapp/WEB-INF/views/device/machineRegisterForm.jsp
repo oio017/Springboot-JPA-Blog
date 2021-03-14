@@ -7,25 +7,25 @@
 	<form action="/action_page.php">
 		<input type="hidden" id="slotName" value="" />
 		<div class="form-group">
-			<label for="deviceType">Merchant Code</label> <input type="text"
-				class="form-control"
-				placeholder="Enter Merchant Code (ex. CVVN1000011)"
-				id="merchantCode">
-		</div>
-		<div class="form-group">
-			<label for="deviceType">Merchant Name</label> <input type="text"
+			<label for="merchantName">Merchant Name</label> <input type="text"
 				class="form-control"
 				placeholder="Enter Merchant Name (ex. CVVN1000011)"
 				id="merchantName">
 		</div>
+		<div class="form-group">
+			<label for="merchantCode">Merchant Code</label> <input type="text"
+				class="form-control"
+				placeholder="Enter Merchant Code (ex. CVVN1000011)"
+				id="merchantCode">
+		</div>
 		<div class="input-group mb-3">
 			<div class="input-group-prepend">
-				<label class="input-group-text" for="deviceStatus">모델이름</label>
+				<label class="input-group-text" for="deviceStatus">기기타입</label>
 			</div>
 			<select class="custom-select" id="deviceType">
 				<option selected>Choose...</option>
 				<c:forEach var="deviceType" items="${deviceTypes}">
-					<option value="{deviceType.modelName}">${deviceType.modelName}</option>
+					<option value="${deviceType.id}">${deviceType.modelName}</option>
 				</c:forEach>
 			</select>
 		</div>
@@ -46,18 +46,18 @@
 				class="form-control" placeholder="Enter access code" id="accessCode">
 		</div>
 		<div class="form-group">
-			<label for="deviceType">Hash Key</label> <input type="text"
-				class="form-control" placeholder="Enter hash key" id="hassKey">
+			<label for="hashKey">Hash Key</label> <input type="text"
+				class="form-control" placeholder="Enter hash key" id="hashKey">
 		</div>
 
 		<div class="form-group">
-			<label for="deviceType">Console Account</label> <input type="text"
+			<label for="consoleAccount">Console Account</label> <input type="text"
 				class="form-control" placeholder="Enter Console Account"
 				id="consoleAccount">
 		</div>
 
 		<div class="form-group">
-			<label for="deviceType">Console Password</label> <input type="text"
+			<label for="consolePassword">Console Password</label> <input type="text"
 				class="form-control" placeholder="Enter Console Password"
 				id="consolePassword">
 		</div>
@@ -67,14 +67,31 @@
 				<label class="input-group-text" for="internetStatus">인터넷
 					가능여부</label>
 			</div>
-			<select class="custom-select" id="internetStatus">
+			<select class="custom-select" id="internet">
 				<option selected>Choose...</option>
-				<option value="4">ENABLE</option>
-				<option value="5">DISABLE</option>
+				<option value="3">ENABLE</option>
+				<option value="4">DISABLE</option>
 			</select>
 		</div>
-
-		<div class="card bg-light">
+		
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="Operstatus">운영상 상태</label>
+			</div>
+			<select class="custom-select" id="status">
+				<option selected>Choose...</option>
+				<option value="0">STOP</option>
+				<option value="1">RUNNING</option>
+				<option value="2">BROKEN</option>
+			</select>
+		</div>
+		
+		<div class="form-group">
+			<label for="location">설치 위치정보</label> <input type="text"
+				class="form-control" placeholder="설치한 위치 정보를 입력하세요." id="location">
+		</div>
+		
+<%-- 		<div class="card bg-light">
 			<div class="card-body">
 				<h6 class="card-text">슬롯별 지정된 상품정보</h6>
 				<hr />
@@ -101,12 +118,12 @@
 
 
 			</div>
-		</div>
+		</div> --%>
 
 	</form>
 
 	<hr/>
-	<button id="btn-save" class="btn btn-primary">등록완료</button>
+	<button id="btn-vendingMachine-save" class="btn btn-primary">등록</button>
 
 </div>
 <!-- <script>
@@ -126,6 +143,6 @@
 
 					});
 </script> -->
-<script src="/js/deviceType.js"></script>
+<script src="/js/deviceInfo.js"></script>
 <%@ include file="../layout/footer.jsp"%>
 

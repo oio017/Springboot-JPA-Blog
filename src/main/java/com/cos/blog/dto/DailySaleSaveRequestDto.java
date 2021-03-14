@@ -12,7 +12,7 @@ public class DailySaleSaveRequestDto {
 
 	private String merchantName;
 	private String date;
-	private List<PaymentInfo> payments;
+	private List<PaymentInfoDto> payments;
 
 }
 

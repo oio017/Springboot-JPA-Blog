@@ -38,5 +38,5 @@
 
 </div>
 
-<script src="/js/user.js"></script>
+<script src="/js/deviceInfo.js"></script>
 <%@ include file="../layout/footer.jsp"%>

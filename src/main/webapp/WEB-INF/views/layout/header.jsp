@@ -62,16 +62,14 @@
     </button>
     <div class="dropdown-menu">
 			<a class="dropdown-item" href="/deviceType/register">기기타입 등록</a>
-			<a class="dropdown-item" href="/deviceType/machineRegister">기기 타입별 상품 등록</a>
-			<a class="dropdown-item" href="/deviceType/machineRegister">자판기 등록</a>
+			<a class="dropdown-item" href="/vendingMachine/register">자판기 등록</a>
 			<div class="dropdown-divider"></div>
 			<a class="dropdown-item" href="/deviceType/list">기기타입 리스트</a>
-			<a class="dropdown-item" href="/deviceType/machineRegister">기기 타입별 상품등록 리스트</a>
-			<a class="dropdown-item" href="/deviceType/machineList">자판기 등록 리스트</a> 
+			<a class="dropdown-item" href="/vendingMachine/list">자판기 등록 리스트</a> 
     </div>
   </div><!-- /btn-group -->
   
-  <div class="btn-group">
+<!--   <div class="btn-group">
     <button type="button" class="btn btn-secondary">상품정보 관리</button>
     <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <span class="sr-only">Toggle Dropdown</span>
@@ -81,7 +79,7 @@
       <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="/deviceType/list">상품 형환보기</a>
     </div>
-  </div><!-- /btn-group -->
+  </div>/btn-group -->
   
   
   <div class="btn-group">

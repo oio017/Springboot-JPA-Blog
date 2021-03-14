@@ -11,8 +11,48 @@ let index = {
 		$("#btn-update").on("click", () => {
 			this.update();
 		});
+
+		$("#btn-vendingMachine-save").on("click", () => {
+			this.vending_Machine_Save();
+		});
 	},
 
+	vending_Machine_Save: function() {
+		let data = {
+			merchantName: $("#merchantName").val(),
+			merchantCode: $("#merchantCode").val(),
+			ip:$("#ip").val(),
+			port:$("#port").val(),
+			accessCode:$("#accessCode").val(),
+			hashKey:$("#hashKey").val(),
+			consoleAccount:$("#consoleAccount").val(),
+			consolePassword:$("#consolePassword").val(),
+			internet:$("#internet").val(),
+			status:$("#status").val(),
+			location:$("#location").val(),
+		};
+		
+		let deviceTypeId = $("#deviceType").val();
+
+		alert(JSON.stringify(data));
+		alert(JSON.stringify(deviceTypeId));
+
+		//ajax를 통신을 이용해서 3개의 데이터를 json으로 변경해서 inert 요청
+		$.ajax({
+			type: "POST",
+			url: "/api/vendingMachineRegister/" + deviceTypeId,
+			data: JSON.stringify(data),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json" // 응답에 대한 DataType 지정
+		}).done(function(resp) {
+			alert("자판기 등록이 완료 되었습니다.");
+			location.href = "/vendingMachine/list";
+
+		}).fail(function(error) {
+			alert(JSON.stringify(error));
+		});
+	},
+	
 	save: function() {
 		let data = {
 			modelName: $("#modelName").val(),
@@ -23,7 +63,7 @@ let index = {
 		};
 
 		alert(JSON.stringify(data));
-		
+
 		//ajax를 통신을 이용해서 3개의 데이터를 json으로 변경해서 inert 요청
 		$.ajax({
 			type: "POST",
@@ -32,7 +72,7 @@ let index = {
 			contentType: "application/json; charset=utf-8", // 요청 시 DataType 지정 : Json일 경우 JavaScript 오브젝트로 변경
 			dataType: "json" // 응답에 대한 DataType 지정
 		}).done(function(resp) {
-			alert("글쓰기가 완료 되었습니다.");
+			alert("디바이스 타입 등록이 완료 되었습니다.");
 			location.href = "/deviceType/list";
 
 		}).fail(function(error) {
@@ -77,7 +117,7 @@ let index = {
 			alert(JSON.stringify(error));
 		});
 	},
-	
+
 	replySave: function() {
 		let data = {
 			userId: $("#userId").val(),
@@ -85,7 +125,7 @@ let index = {
 			content: $("#reply-content").val()
 		};
 		// let boardId = $("#boardId").val();
-		
+
 		$.ajax({
 			type: "POST",
 			//url: `/api/board/${data.boardId}/reply`,
@@ -101,10 +141,10 @@ let index = {
 			alert(JSON.stringify(error));
 		});
 	},
-	
-		// Onclick Event 함수이며 리스너를 통해 호출되는 것이 아님.
-		replyDelete: function(boardId, replyId) {
-		
+
+	// Onclick Event 함수이며 리스너를 통해 호출되는 것이 아님.
+	replyDelete: function(boardId, replyId) {
+
 		$.ajax({
 			type: "DELETE",
 			url: `/api/board/${boardId}/reply/${replyId}`,
