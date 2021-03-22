@@ -45,6 +45,7 @@ public class VendingMachine {
 	private String merchantName ;
 	
 	@ManyToOne
+	@JsonIgnoreProperties({"dailySale", "payment", "vendingMachine", "deviceType"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
 	@JoinColumn(name="deviceId")
 	private DeviceType deviceType;
 	
@@ -82,11 +83,12 @@ public class VendingMachine {
 	@Column( length=500)
 	private String statusPerSlot ;
 	
+	
 	// 슬롯별 현재 재고수량 [1, 23, 22, ....]
 	@Column(length=500)
 	private String stockPerSlot ;
 	
-	@JsonIgnoreProperties({"vendingMachine", "deviceType"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
+	@JsonIgnoreProperties({"dailySale", "payment", "vendingMachine", "deviceType"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
 	@OneToMany(mappedBy = "vendingMachine", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@OrderBy("id desc")
 	private List<SaleProduct> SaleProduct;

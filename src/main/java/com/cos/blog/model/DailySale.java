@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -35,14 +36,20 @@ public class DailySale {
 	private int id;
 	
 	@ManyToOne
+	@JsonIgnoreProperties({"dailySale", "payment", "vendingMachine", "deviceType"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
 	@JoinColumn(name="vendingMachineId")
 	private VendingMachine vendingMachine;
+
+	
+	@OneToOne
+	@JoinColumn(name="eventLogId")
+	private EventLog eventLog;
 	
 	// date : 20210301
 	@Column(nullable=false, length=20)
 	private String date;
 
-	@JsonIgnoreProperties({"dailySale"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
+	@JsonIgnoreProperties({"dailySale", "payment", "vendingMachine", "deviceType"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
 	@OneToMany(mappedBy = "dailySale", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@OrderBy("id desc")
 	private List<Payment> payments;
@@ -83,4 +90,20 @@ public class DailySale {
 	@CreationTimestamp
 	private Timestamp createDate;
 
+	public void addTotalAccount(int account) {
+		this.totalAccount += account;
+	}
+	public void addTotalRefudAccount(int account) {
+		this.totalRefudAccount += account;
+	}
+	public void calcTotalRealAccount() {
+		this.totalRealAccount = this.totalAccount - this.totalRefudAccount;
+	}
+	public void increaseTotalRefudCnt() {
+		this.totalRefudCnt++;
+	}
+	public void increaseTotalFailCnt() {
+		this.totalFailCnt++;
+	}
+	
 }

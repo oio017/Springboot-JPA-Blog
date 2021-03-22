@@ -1,6 +1,7 @@
 package com.cos.blog.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.simple.JSONObject;
@@ -17,6 +18,7 @@ import com.cos.blog.model.VendingMachine;
 import com.cos.blog.service.CsvService;
 import com.cos.blog.service.VendingMachineService;
 import com.cos.blog.service.VendingStatusService;
+import com.cos.blog.util.DataConvert;
 
 @Controller
 public class CsvController {
@@ -30,37 +32,43 @@ public class CsvController {
 	@Autowired
 	private VendingStatusService vendingStatusService;
 	
-	
+	@Autowired
+	private DataConvert dataConvert;
 
 	
 	@GetMapping({"/sale/saleList"})
 	public String index(Model model) throws IOException {
 		
 		VendingMachine vendingMachine =  vendingMachineService.findByMerchantName("CVVN100015");		
-		System.out.println("vendingMachine: " + vendingMachine.toString());
-
-		DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "20210311");
-		
-		System.out.println("dailySale : " + dailySale.toString());
-		
-		
+		System.out.println("vendingMachine: " + vendingMachine.getMerchantName());
+		DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-11T11:50:55");
+	
 		List<Payment> payments= dailySale.getPayments();
-		System.out.println("payments : " + payments.toString());
+		System.out.println("payments : " + payments.get(0).getId());
 		
 		payments.forEach(payment -> {
-			System.out.println("payment : " + payment.toString());
-			
 			List<OrderItem> orderItems =  payment.getOrderItems();
 			
 			orderItems.forEach(orderItem -> {
-				System.out.println("orderItem : " + orderItem.toString());
+				System.out.println("orderItem : " + orderItem.getId());
 			});
 		});
 		
-		//model.addAttribute("sales",  jsonObject);
+		model.addAttribute("dailySale",  dailySale);
+		model.addAttribute("slotNames", vendingMachine.getDeviceType().getSlotName());
 		
-		// return "sale/saleTest";
-		return "hi";
+		ArrayList<Integer> slotNamesArray = dataConvert.makeRowColumnSlotName1(vendingMachine.getDeviceType().getSlotName());
+		model.addAttribute("slotNamesArray",  slotNamesArray);
+		
+		model.addAttribute("slotCnt",  vendingMachine.getDeviceType().getTotalslotCnt());
+		
+		System.out.println("Date : " + dailySale.getDate());
+		System.out.println("getMerchantName : " + dailySale.getVendingMachine().getMerchantName());
+		System.out.println("getOrderId : " + dailySale.getPayments().get(0).getOrderId());
+		System.out.println("getUnitPrice : " + dailySale.getPayments().get(0).getOrderItems().get(0).getUnitPrice());
+		
+		return "sale/saleTest";
+
 	}
 	
 //	@GetMapping({"/sale/saleList"})

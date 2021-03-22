@@ -93,19 +93,25 @@
 
 					<div class="col-md-4">
 						<label for="select2-single-input-sm " class="control-label"
-							id="organ-list-label">머신선택</label><br> 
-					<div class="row">							
+							id="organ-list-label">머신선택</label><br>
+						<div class="row">
 							<select class="form-control col-md-7" id="sel1" name="sellist1">
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-						</select>
+								<option>CVVN100010</option>
+								<option>CVVN100011</option>
+								<option>CVVN100012</option>
+								<option>CVVN100013</option>
+								<option>CVVN100014</option>
+								<option>CVVN100015</option>
+								<option>CVVN100016</option>
+								<option>CVVN100017</option>
+								<option>CVVN100018</option>
+							</select>
 
-						<button type="button" class="btn btn-primary" style="margin-left: auto">
-							검색 <i class="fa fa-search"></i>
-						</button>
-					</div>
+							<button type="button" class="btn btn-primary"
+								style="margin-left: auto">
+								검색 <i class="fa fa-search"></i>
+							</button>
+						</div>
 					</div>
 
 				</div>
@@ -118,18 +124,75 @@
 
 	<br />
 	<div>
-		Merchant Code : <span id="id"><i>${sales.Merchantcode} </i></span><br />
-		Date : <span><I>${sales.Daterange} </I></span>
+		Merchant Code : <span id="id"><i>${dailySale.vendingMachine.merchantName}
+		</i></span><br /> Date : <span><I>${dailySale.date} </I></span>
 	</div>
 	<hr />
 
 	<div class="card bg-light">
 		<div class="card-body">
-			<h6 class="card-text">결재시도 금액 : ${sales.TotalAmount}</h6>
-			<h6 class="card-text">환불 결재금액 : ${sales.TotalRufudAmount}</h6>
-			<h6 class="card-text">
-				실 결재금액 : ${sales.TotalRealAmount} <br />
-			</h6>
+
+
+			<div class="portlet-body">
+				<div class="row">
+					<div class="col-md-3">
+						<h6 class="card-text">결재시도 금액 : ${dailySale.totalAccount}</h6>
+						<h6 class="card-text">환불 결재금액 :
+							${dailySale.totalRefudAccount}</h6>
+						<h6 class="card-text">
+							실 결재금액 : ${dailySale.totalRealAccount} <br />
+						</h6>
+					</div>
+					<div class="col-md-4">
+						<!-- The Modal -->
+						<div class="container mt-3">
+							<!-- Button to Open the Modal -->
+							<button type="button" class="btn btn-primary" data-toggle="modal"
+								data-target="#myModal">해당 자판기 슬롯 정보보기</button>
+
+
+							<div class="modal fade" id="myModal">
+								<div class="modal-dialog modal-lg">
+									<div class="modal-content">
+
+										<!-- Modal Header -->
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal">×</button>
+										</div>
+
+										<!-- Modal body -->
+										<div class="modal-body">
+
+
+											<h6 class="card-text">
+												<c:forEach var="i" begin="0"
+													end="${slotNamesArray.size() -1}">
+													<c:out value="${slotNamesArray[i]}" />
+													<c:out value="제품이름" />, &nbsp;
+												</c:forEach>
+											</h6>
+
+										</div>
+
+										<!-- Modal footer -->
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Close</button>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<!-- The Modal -->
+					</div>
+				</div>
+			</div>
+
+
+
+
 			<hr />
 			<h6 class="card-text">
 				슬롯별 판매 수량 <br />
@@ -139,12 +202,7 @@
 				<canvas id="myChart"></canvas>
 			</div>
 
-			<h6 class="card-text">
-				<c:forEach var="i" begin="0" end="${sales.slotInfoArray.size() -1}">
-					<c:out value="${sales.slotInfoArray[i]}" />Slot(<c:out
-						value="${sales.saleCntInfo[i]})" />
-				</c:forEach>
-			</h6>
+
 
 		</div>
 	</div>
@@ -163,22 +221,26 @@
 				<th>RefundAmount</th>
 				<th>RefundStatus</th>
 				<th>RefundDesc</th>
-				<th>SuccessSlots</th>
+				<th>SaleItems</th>
+				<th>RefundItems</th>
+				<th>PaymentError</th>
 			</tr>
 		</thead>
 		<tbody id="myTable">
-			<c:forEach var="pay" items="${sales.payInfoArray}">
+			<c:forEach var="pay" items="${dailySale.payments}">
 				<tr>
-					<td>${pay.OrderId}</td>
-					<td>${pay.TransactionId}</td>
-					<td>${pay.Date}</td>
-					<td>${pay.Method}</td>
-					<td>${pay.TotalAmount}</td>
-					<td>${pay.SuccessAmount}</td>
-					<td>${pay.RefundAmount}</td>
-					<td>${pay.RefundStatus}</td>
-					<td>${pay.RefundDesc}</td>
-					<td>${pay.SuccessSlots}</td>
+					<td>${pay.orderId}</td>
+					<td>${pay.transactionId}</td>
+					<td>${pay.paymentDate}</td>
+					<td>${pay.paymentMethodId}</td>
+					<td>${pay.amount}</td>
+					<td>${pay.amount}</td>
+					<td>${pay.refund}</td>
+					<td>${pay.refundResult}</td>
+					<td>${pay.refundDesc}</td>
+					<td>${pay.salesItems}</td>
+					<td>${pay.refundItems}</td>
+					<td>${pay.paymentError}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -214,22 +276,111 @@
 				var myChart = new Chart(ctx, {
 					type : 'bar',
 					data : {
-						labels : ${sales.slotInfoArray}, /* labels : [ 'Red', 'Blue', 'Yellow', 'Green', 'Purple','Orange' ], */
+
+						labels :  ${slotNames}, // [ 'Red', 'Blue', 'Yellow', 'Green', 'Purple','Orange' ], // 여기에 각 슬롯별 색상 리스트 정보
 						datasets : [ {
 							label : ' 슬롯당 팬매 수량',
-							data : ${sales.saleCntInfo}, /* [ 12, 19, 3, 5, 2, 3 ], */
+							data :  ${dailySale.saleCntPerSlot}, // [ 12, 19, 3, 5, 2, 3 ],   //여기에 각 슬롯 번호 리스트
 							backgroundColor : [ 'rgba(255, 99, 132, 0.2)',
 									'rgba(54, 162, 235, 0.2)',
 									'rgba(255, 206, 86, 0.2)',
 									'rgba(75, 192, 192, 0.2)',
 									'rgba(153, 102, 255, 0.2)',
-									'rgba(255, 159, 64, 0.2)' ],
+									'rgba(255, 159, 64, 0.2)',
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(255, 206, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(153, 102, 255, 0.2)',
+									'rgba(255, 159, 64, 0.2)',
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(255, 206, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(153, 102, 255, 0.2)',
+									'rgba(255, 159, 64, 0.2)',
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(255, 206, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(153, 102, 255, 0.2)',
+									'rgba(255, 159, 64, 0.2)',
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(255, 206, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(153, 102, 255, 0.2)',
+									'rgba(255, 159, 64, 0.2)',
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(255, 206, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(153, 102, 255, 0.2)',
+									'rgba(255, 159, 64, 0.2)',
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(255, 206, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(153, 102, 255, 0.2)',
+									'rgba(255, 159, 64, 0.2)',
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(255, 206, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(153, 102, 255, 0.2)',
+									'rgba(255, 159, 64, 0.2)',
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)'],
 							borderColor : [ 'rgba(255, 99, 132, 1)',
 									'rgba(54, 162, 235, 1)',
 									'rgba(255, 206, 86, 1)',
 									'rgba(75, 192, 192, 1)',
 									'rgba(153, 102, 255, 1)',
-									'rgba(255, 159, 64, 1)' ],
+									'rgba(255, 159, 64, 1)',
+									'rgba(255, 99, 132, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(255, 206, 86, 1)',
+									'rgba(75, 192, 192, 1)',
+									'rgba(153, 102, 255, 1)',
+									'rgba(255, 159, 64, 1)',
+									'rgba(255, 99, 132, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(255, 206, 86, 1)',
+									'rgba(75, 192, 192, 1)',
+									'rgba(153, 102, 255, 1)',
+									'rgba(255, 159, 64, 1)',
+									'rgba(255, 99, 132, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(255, 206, 86, 1)',
+									'rgba(75, 192, 192, 1)',
+									'rgba(153, 102, 255, 1)',
+									'rgba(255, 159, 64, 1)',
+									'rgba(255, 99, 132, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(255, 206, 86, 1)',
+									'rgba(75, 192, 192, 1)',
+									'rgba(153, 102, 255, 1)',
+									'rgba(255, 159, 64, 1)',
+									'rgba(255, 99, 132, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(255, 206, 86, 1)',
+									'rgba(75, 192, 192, 1)',
+									'rgba(153, 102, 255, 1)',
+									'rgba(255, 159, 64, 1)',
+									'rgba(255, 99, 132, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(255, 206, 86, 1)',
+									'rgba(75, 192, 192, 1)',
+									'rgba(153, 102, 255, 1)',
+									'rgba(255, 159, 64, 1)',
+									'rgba(255, 99, 132, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(255, 206, 86, 1)',
+									'rgba(75, 192, 192, 1)',
+									'rgba(153, 102, 255, 1)',
+									'rgba(255, 159, 64, 1)',
+									'rgba(255, 99, 132, 1)',
+									'rgba(54, 162, 235, 1)' ],
 							borderWidth : 1
 						} ]
 					},

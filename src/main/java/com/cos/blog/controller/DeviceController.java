@@ -21,12 +21,16 @@ import com.cos.blog.model.VendingMachine;
 import com.cos.blog.repository.DeviceRepository;
 import com.cos.blog.service.DeviceService;
 import com.cos.blog.service.VendingMachineService;
+import com.cos.blog.util.DataConvert;
  
 @Controller
 public class DeviceController {
 
 	@Autowired
 	private DeviceService devcieService;
+	
+	@Autowired
+	private DataConvert dataConvert;
 		
 	@Autowired
 	private VendingMachineService vendingMachineService;
@@ -73,34 +77,10 @@ public class DeviceController {
 			VendingMachine vendingMachine = vendingMachineService.detail(id);
 			String slotName = vendingMachine.getDeviceType().getSlotName();
 			
-			System.out.println("slotName : " + slotName);
-			JSONParser parser = new JSONParser();
-			JSONArray jsonArray = null;
-			try {
-				jsonArray = (JSONArray)parser.parse(slotName);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}			
-			System.out.println("jsonArray : " + jsonArray);
-			model.addAttribute("vendingMachine",  vendingMachine);
-			
-			ArrayList<ArrayList<Integer>> arrayList = new ArrayList<ArrayList<Integer>>();
-			int cnt = 0;
-			int totalCnt = 0;
-			for(int row = 0; row < 6; row++) {
-				arrayList.add(new ArrayList<Integer>());
-				if (row < 2)
-					cnt = 5;
-				else
-					cnt = 10;
-				for(int col = 0; col < cnt; col++) {
-					int value = Integer.parseInt(String.valueOf(jsonArray.get(totalCnt++)));
-					arrayList.get(row).add((Integer)value);
-				}
-			}
-			
+			ArrayList<ArrayList<Integer>> arrayList = dataConvert.makeRowColumnSlotName(slotName); 
 			System.out.println("arrayList : " + arrayList.toString());
-				
+			
+			model.addAttribute("vendingMachine",  vendingMachine);
 			model.addAttribute("slotArrayList",  arrayList);
 		
 			return "device/machineDetail";

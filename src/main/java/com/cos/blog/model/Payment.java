@@ -42,6 +42,7 @@ public class Payment {
 	private DailySale dailySale;
 
 	@ManyToOne
+	@JsonIgnoreProperties({"dailySale", "payment", "vendingMachine", "deviceType"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
 	@JoinColumn(name = "vendingMachineId")
 	private VendingMachine vendingMachine;
 
