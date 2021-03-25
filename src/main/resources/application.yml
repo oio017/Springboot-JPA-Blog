@@ -27,9 +27,9 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       use-new-id-generator-mappings: false
-    show-sql: true # 실행되는 모든 Query 문 log 메세지로 출력
+    show-sql: false # 실행되는 모든 Query 문 log 메세지로 출력 true, false
     properties:
-      hibernate.format_sql: true
+      hibernate.format_sql: false #true, false
 
   jackson:
     serialization:

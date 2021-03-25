@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -65,6 +66,10 @@ public class DailySale {
 	// MotorErrorCntPerSlot = [1, 0, 0, 0 ….]	# 슬롯당 모터 오류 발생 횟수
 	@Column(length=500)
 	private String motorErrorCntPerSlot ;
+	
+	// saleCntPerSlot = [100, 54, …..] 	# 슬롯당 판매 금액
+	@Lob
+	private String amountPerSlot ;
 	
 	// totalAccount : 100000
 	private int totalAccount;

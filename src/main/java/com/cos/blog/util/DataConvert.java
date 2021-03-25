@@ -13,7 +13,7 @@ import com.cos.blog.model.OrderItem;
 public class DataConvert {
 
 	public enum EntityType {
-		SALE, MOTOR, JAM, ACCOUNT
+		SALE, MOTOR, JAM, AMOUNT
 	}
 	
 	public enum PaymentType {
@@ -24,14 +24,24 @@ public class DataConvert {
 	JSONArray saleCntPerSlotJsonArray = null;
 	JSONArray motorErrorCntPerSlotJsonArray = null;
 	JSONArray jamCntPerSlotJsonArray = null;
-	JSONArray accountPerSlotJsonArray = null;
+	JSONArray amountPerSlotJsonArray = null;
 	
 	ArrayList<Integer> saleCntPerSlotList = null;
 	ArrayList<Integer> motorErrorCntPerSlotList = null;
 	ArrayList<Integer> jamCntPerSlotList = null;
-	ArrayList<Integer> accountPerSlotList = null;
+	ArrayList<Integer> amountPerSlotList = null;
 	
 	
+	public void init() {
+		saleCntPerSlotJsonArray = null;
+		motorErrorCntPerSlotJsonArray = null;
+		jamCntPerSlotJsonArray = null;
+		amountPerSlotJsonArray = null;
+		saleCntPerSlotList = null;
+		motorErrorCntPerSlotList = null;
+		jamCntPerSlotList = null;
+		amountPerSlotList = null;
+	}
 	
 	// String [1, 2,3,4,5,.... ] --> ArrayList<ArrayList<Integer>> [[1, 2, 3, 4, 5], [11, 12, 13, 14, 15], [21, .... 30] .. [51, 52 ... 60]]
 	public ArrayList<ArrayList<Integer>> makeRowColumnSlotName(String StringSlots){
@@ -99,22 +109,18 @@ public class DataConvert {
 			cntPerSlotJsonArray = jamCntPerSlotJsonArray;	
 			cntPerSlotList = jamCntPerSlotList;
 		}
-		else if(type == EntityType.ACCOUNT) {
-			cntPerSlotJsonArray = accountPerSlotJsonArray;	
-			cntPerSlotList = accountPerSlotList;
-		}
 		
+		System.out.println("slotNames: " + slotNames);
 		JSONParser parser = new JSONParser();
 		if (cntPerSlotJsonArray == null) {
 			try {
-				System.out.println("slotNames: " + slotNames);
+				System.out.println("Init JsonArray: " + type.toString());
 				cntPerSlotJsonArray = (JSONArray)parser.parse(slotNames);
 				System.out.println(type.toString() + "_cntPerSlotJsonArray: " + cntPerSlotJsonArray.toJSONString());
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}			
 		}
-
 		System.out.println("slotId: " + slotId);
 		int size = cntPerSlotJsonArray.size();
 		
@@ -134,7 +140,8 @@ public class DataConvert {
 		}
 		int value = cntPerSlotList.get(index) + quantity;
 		System.out.println("value: " + value);
-		cntPerSlotList.add(index, value); 
+		//cntPerSlotList.add(index, value); 
+		cntPerSlotList.set(index, value);
 		
 		System.out.println(type.toString() + "_cntPerSlotList: " + cntPerSlotList.toString());
 		
@@ -189,9 +196,9 @@ public class DataConvert {
 		int slotId = orderItem.getSlotId();
 		JSONArray whatPerSlotJsonArray = null;
 		ArrayList<Integer> whatPerSlotList = null;
-		if(type == EntityType.ACCOUNT) {
-			whatPerSlotJsonArray = accountPerSlotJsonArray;	
-			whatPerSlotList = accountPerSlotList;
+		if(type == EntityType.AMOUNT) {
+			whatPerSlotJsonArray = amountPerSlotJsonArray;	
+			whatPerSlotList = amountPerSlotList;
 		}
 		
 		JSONParser parser = new JSONParser();
@@ -199,7 +206,7 @@ public class DataConvert {
 			try {
 				System.out.println("slotNames: " + slotNames);
 				whatPerSlotJsonArray = (JSONArray)parser.parse(slotNames);
-				System.out.println(type + "accountPerSlotJsonArray: " + accountPerSlotJsonArray.toJSONString());
+				System.out.println(type + "amountPerSlotJsonArray: " + whatPerSlotJsonArray.toJSONString());
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}			
@@ -229,24 +236,25 @@ public class DataConvert {
 			int dispensingFailItems = orderItem.getDispensingFailItems();
 			int value = whatPerSlotList.get(index) + price*(quantity - dispensingFailItems);
 			System.out.println("value: " + value);
-			whatPerSlotList.add(index, value);			
+			//whatPerSlotList.add(index, value);			
+			whatPerSlotList.add(index, value);
 		}
 		
-		System.out.println(type.toString() + "_acccountPerSlotList: " + whatPerSlotList.toString());
+		System.out.println(type.toString() + "_wPerSlotList: " + whatPerSlotList.toString());
 		
-		if (type == EntityType.SALE) {
-			accountPerSlotJsonArray = whatPerSlotJsonArray;	
-			saleCntPerSlotList = whatPerSlotList;
+		if (type == EntityType.AMOUNT) {
+			amountPerSlotJsonArray = whatPerSlotJsonArray;	
+			amountPerSlotList = whatPerSlotList;
 		}
 	}
 	
-	public String getWhatPerSlot(PaymentType type) {
+	public String getWhatPerSlot(EntityType type) {
 		String whatPerSlot = null;
 		StringBuilder sb = new StringBuilder();
 		ArrayList<Integer> whatPerSlotList = null;
 
-		if (type == PaymentType.VIETEELPAY) {	
-			whatPerSlotList = accountPerSlotList;
+		if (type == EntityType.AMOUNT) {	
+			whatPerSlotList = amountPerSlotList;
 		}
 		
 		System.out.println(type.toString() + "_whatPerSlotList : " + whatPerSlotList.toString());

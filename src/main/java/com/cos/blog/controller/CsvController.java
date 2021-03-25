@@ -39,9 +39,11 @@ public class CsvController {
 	@GetMapping({"/sale/saleList"})
 	public String index(Model model) throws IOException {
 		
-		VendingMachine vendingMachine =  vendingMachineService.findByMerchantName("CVVN100015");		
+		VendingMachine vendingMachine =  vendingMachineService.findByMerchantName("CVVN100020");		
 		System.out.println("vendingMachine: " + vendingMachine.getMerchantName());
-		DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-11T11:50:55");
+		//DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-11T11:50:55");
+		DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-24T11:50:55");
+
 	
 		List<Payment> payments= dailySale.getPayments();
 		System.out.println("payments : " + payments.get(0).getId());

@@ -1,10 +1,6 @@
 package com.cos.blog.dto;
 
 import java.util.List;
-
-import com.cos.blog.model.Payment;
-import com.cos.blog.model.OrderItem;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentInfoDto {
-		private List<OrderItem> orderItems;
-		private Payment payment;		
+public class SlotUpdateRequestDto {
+
+	private String merchantName;
+	private String date;
+	private List<ProductToSlotDto> productToSlots;
+
 }
 
