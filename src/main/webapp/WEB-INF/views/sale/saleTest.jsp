@@ -166,12 +166,29 @@
 
 
 											<h6 class="card-text">
-												<c:forEach var="i" begin="0"
-													end="${slotNamesArray.size() -1}">
-													<c:out value="${slotNamesArray[i]}" />
-													<c:out value="제품이름" />, &nbsp;
+											<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>Slot</th>
+													<th>SlotStatus</th>
+													<th>Stock</th>
+													<th>ProductName</th>
+													<th>Price</th>
+												</tr>
+											</thead>
+											<tbody id="myTable">
+												<c:forEach var="slot" items="${slots}">
+													<tr>
+														<td>${slot.slotNum}</td>
+														<td>${slot.slotStatus}</td>
+														<td>${slot.unitsOnSlot} / ${slot.sizeOnSlot}</td>
+														<td>${slot.product.productName}</td>
+														<td>${slot.product.unitPrice}</td>
+													</tr>
 												</c:forEach>
-											</h6>
+											</tbody>
+										</table>
+										</h6>
 
 										</div>
 

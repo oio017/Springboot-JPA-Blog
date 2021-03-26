@@ -46,12 +46,11 @@ public class VendingApiController {
 
 		System.out.println("getMerchantName : " + slotUpdateRequestDto.getMerchantName());
 		System.out.println("getDate : " + slotUpdateRequestDto.getDate());
-		slotUpdateRequestDto.getProductToSlots().forEach(productToSlot -> {
-			System.out.println("productToSlot : " + productToSlot.toString());
-
-			Product product = productToSlot.getProduct();
-			Slot slot = productToSlot.getSlot();
-		});
+//		slotUpdateRequestDto.getProductToSlots().forEach(productToSlot -> {
+//
+//			Product product = productToSlot.getProduct();
+//			Slot slot = productToSlot.getSlot();
+//		});
 
 		vendingStatusService.slotUpdate(slotUpdateRequestDto);
 

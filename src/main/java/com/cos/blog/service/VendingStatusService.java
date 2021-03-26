@@ -198,37 +198,49 @@ public class VendingStatusService {
 		EventLog eventLog = new EventLog();
 		eventLog.setEventType(EventType.SLOTUPDATE);
 		eventLog.setVendingMachine(vendingMachine);
+		System.out.println("0");
 		eventLog.setLocalDateTime(slotUpdateRequestDto.getDate());
+		System.out.println("1");
 		eventRepository.save(eventLog);
+		System.out.println("2");
 		
-
 		slotUpdateRequestDto.getProductToSlots().forEach(productToSlot ->{
-			//2. Product
+			System.out.println("3");
 			System.out.println("productToSlot : " + productToSlot.toString());
+			//2. Product 
+			System.out.println("productToSlot.slotID : " + productToSlot.getSlots().getSlotId());
+			
+			System.out.println("productToSlot.productName : " + productToSlot.getProduct().getProductName());
+			System.out.println("5"); 
 			
 			Product product = productToSlot.getProduct();
-			Product storedProduct = productRepository.findByProductName(product.getProductName());
+			Product storedProduct = productRepository.findByVendingMachineIdAndProductId(vendingMachine.getId(), product.getProductId());
 			if (storedProduct == null) {
+				product.setVendingMachine(vendingMachine);
 				storedProduct = productRepository.save(product);
+				System.out.println("save product");
 			}
 			else {
 				// set dirty : 해당 함수로 종료 시(Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹이 -> 자동 업데이트가 되어 DB에 Flush 진행됨.
 				storedProduct.setUnitPrice(product.getUnitPrice());
 				storedProduct.setUnitsInStock(product.getUnitsInStock());
+				System.out.println("update product");
 			}
 			
-			
-			int slotId = productToSlot.getSlot().getSlotId();
-			Slot slot = productToSlot.getSlot();
-			Slot storedSlot = slotRepository.findByVendingMachineIdAndSlotId(merchantName, slotId);
+			int slotId = productToSlot.getSlots().getSlotId();
+			Slot slot = productToSlot.getSlots();
+			Slot storedSlot = slotRepository.findByVendingMachineIdAndSlotId(vendingMachine.getId(), slotId);
 			if (storedSlot == null) {
-				slot.setSlotId(slotId);
+				slot.setProduct(storedProduct);
 				slot.setVendingMachine(vendingMachine);
 				slotRepository.save(slot);
+				System.out.println("save slot");
 			}
 			else {
 				// set dirty : 해당 함수로 종료 시(Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹이 -> 자동 업데이트가 되어 DB에 Flush 진행됨.
+				storedSlot.setSlotId(slotId);
 				storedSlot.setProduct(storedProduct);
+				System.out.println("update slot");
 			}
 		});
 	

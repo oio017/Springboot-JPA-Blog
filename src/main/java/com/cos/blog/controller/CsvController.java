@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.cos.blog.model.DailySale;
 import com.cos.blog.model.OrderItem;
 import com.cos.blog.model.Payment;
+import com.cos.blog.model.Product;
+import com.cos.blog.model.Slot;
 import com.cos.blog.model.VendingMachine;
 import com.cos.blog.service.CsvService;
+import com.cos.blog.service.ProductService;
+import com.cos.blog.service.SlotService;
 import com.cos.blog.service.VendingMachineService;
 import com.cos.blog.service.VendingStatusService;
 import com.cos.blog.util.DataConvert;
@@ -33,6 +37,12 @@ public class CsvController {
 	private VendingStatusService vendingStatusService;
 	
 	@Autowired
+	private ProductService productService;
+	
+	@Autowired
+	private SlotService slotService;
+	
+	@Autowired
 	private DataConvert dataConvert;
 
 	
@@ -48,14 +58,21 @@ public class CsvController {
 		List<Payment> payments= dailySale.getPayments();
 		System.out.println("payments : " + payments.get(0).getId());
 		
-		payments.forEach(payment -> {
-			List<OrderItem> orderItems =  payment.getOrderItems();
-			
-			orderItems.forEach(orderItem -> {
-				System.out.println("orderItem : " + orderItem.getId());
-			});
-		});
+//		payments.forEach(payment -> {
+//			List<OrderItem> orderItems =  payment.getOrderItems();
+//			
+//			orderItems.forEach(orderItem -> {
+//				System.out.println("orderItem : " + orderItem.getId());
+//			});
+//		});
 		
+		List<Slot> slots = slotService.findByVendingMachineId(vendingMachine.getId());
+//		slots.forEach(slot -> {
+//			System.out.println("getSlotId : " + slot.getSlotId());
+//			System.out.println("ProductName : " + slot.getProduct().getProductName());
+//		});
+		
+		model.addAttribute("slots",  slots);
 		model.addAttribute("dailySale",  dailySale);
 		model.addAttribute("slotNames", vendingMachine.getDeviceType().getSlotName());
 		

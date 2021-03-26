@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductToSlotDto {
 		private Product product;
-		private Slot slot;
+		private Slot slots;
 }
 

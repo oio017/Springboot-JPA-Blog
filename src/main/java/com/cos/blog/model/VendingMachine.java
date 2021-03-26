@@ -35,12 +35,13 @@ public class VendingMachine {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(nullable=false, length=50)
+
+	@Column(nullable=false, length=50, unique=true)
 	private String merchantName ;
 	
 	@ManyToOne
 	@JsonIgnoreProperties({"dailySale", "payment", "vendingMachine", "deviceType"}) //무한참조 방지 (참조 : https://getinthere.tistory.com/34)
-	@JoinColumn(name="deviceId")
+	@JoinColumn(name="deviceTypeId")
 	private DeviceType deviceType;
 	
 	@Column(nullable=false, length=50)
