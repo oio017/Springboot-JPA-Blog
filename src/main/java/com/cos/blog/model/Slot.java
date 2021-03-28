@@ -2,6 +2,8 @@ package com.cos.blog.model;
 
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import type.SlotStatus;
 
 @Data
 @NoArgsConstructor
@@ -47,9 +50,9 @@ public class Slot {
 	@ColumnDefault("1")
 	private int sizeOnSlot;
 
-	@ColumnDefault("1") // slotStatus -> StatusType 변경할것.
-	private int slotStatus;
-
+	@Enumerated(EnumType.STRING) // STOP, RUNNING, BROKEN
+	private SlotStatus slotStatus;
+	
 	@ColumnDefault("1") // unitsOnSlot -> stockOnSlot
 	private int unitsOnSlot;
 }

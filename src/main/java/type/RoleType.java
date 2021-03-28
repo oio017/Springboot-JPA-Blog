@@ -1,4 +1,4 @@
-package com.cos.blog.model;
+package type;
 
 public enum RoleType {
 	USER, ADMIN

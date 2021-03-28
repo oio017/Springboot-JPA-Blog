@@ -11,7 +11,6 @@ import com.cos.blog.dto.SlotUpdateRequestDto;
 import com.cos.blog.model.Board;
 import com.cos.blog.model.DailySale;
 import com.cos.blog.model.EventLog;
-import com.cos.blog.model.EventType;
 import com.cos.blog.model.Payment;
 import com.cos.blog.model.Product;
 import com.cos.blog.model.Slot;
@@ -28,6 +27,7 @@ import com.cos.blog.util.DataConvert.EntityType;
 import com.cos.blog.util.DataConvert.PaymentType;
 
 import antlr.collections.List;
+import type.EventType;
 
 
 

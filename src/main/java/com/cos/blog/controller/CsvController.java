@@ -52,7 +52,7 @@ public class CsvController {
 		VendingMachine vendingMachine =  vendingMachineService.findByMerchantName("CVVN100020");		
 		System.out.println("vendingMachine: " + vendingMachine.getMerchantName());
 		//DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-11T11:50:55");
-		DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-24T11:50:55");
+		DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-26T11:50:55");
 
 	
 		List<Payment> payments= dailySale.getPayments();
