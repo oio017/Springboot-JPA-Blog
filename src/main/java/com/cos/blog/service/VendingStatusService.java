@@ -68,6 +68,14 @@ public class VendingStatusService {
 				});
 	}
 	
+	@Transactional(readOnly = true)
+	public DailySale findByTheRecentDailySale() {
+		return dailySaleRepository.findByTheRecentDailySale()
+				.orElseThrow(()->{
+					return new IllegalArgumentException("등록된 판매정보가 없습니다.");
+				});
+	}
+	
 	@Transactional // DB(CRUD) 모든 행위가  정상적으로 처리되어야 성공처리. 
 	public void dailySaleSave(DailySaleSaveRequestDto dailySaleSaveRequestDto) {
 		

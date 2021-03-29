@@ -88,6 +88,9 @@
       <span class="sr-only">Toggle Dropdown</span>
     </button>
     <div class="dropdown-menu">
+    
+
+	
 	<a class="dropdown-item" href="/sale/saleList">자판기별 판매현황</a> <!-- 기기별,날짜별 판매현황. 세부(결재건당 상세내역  -->
 	<a class="dropdown-item" href="/deviceType/list">자판기 현황</a> <!-- 자판기별  슬롯현황(걸림, 양호, 모터에러, 제고) -->
 	<a class="dropdown-item" href="/deviceType/list">제품별 판매현황</a> <!-- 제품별, 날짜별 판매현황 -->

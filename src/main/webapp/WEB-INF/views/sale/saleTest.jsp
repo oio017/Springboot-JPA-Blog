@@ -107,7 +107,19 @@
 								<option>CVVN100018</option>
 							</select>
 
-							<button type="button" class="btn btn-primary"
+	<%-- <input type="hidden" id="userId" value="0" />
+	<input type="hidden" id="boardId" value="${board.id}" /> --%>
+
+							<form id="add-form" action="" method="post">
+
+								<input type="hidden" name="startDate" id="input-startDate"  value="2021-03-26">
+								<input type="hidden" name="endData" id="input-endData" value="2021-03-26">
+								<input type="hidden" name="vendingMachine" id="input-vendingMachine" value="CVVN100020">
+								<input id="input-submit" type="submit" value="보내기" />
+
+							</form>
+
+							<button type="button" id="sale-search-button" class="btn btn-primary"
 								style="margin-left: auto">
 								검색 <i class="fa fa-search"></i>
 							</button>
@@ -542,5 +554,5 @@
 				});
 			</script>
 
-<script src="/js/board.js"></script>
+<script src="/js/saleStatus.js"></script>
 <%@ include file="../layout/footer.jsp"%>

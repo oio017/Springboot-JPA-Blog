@@ -9,8 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.cos.blog.dto.CustomSaleStatusDto;
+import com.cos.blog.model.Board;
 import com.cos.blog.model.DailySale;
 import com.cos.blog.model.OrderItem;
 import com.cos.blog.model.Payment;
@@ -46,14 +51,32 @@ public class CsvController {
 	private DataConvert dataConvert;
 
 	
-	@GetMapping({"/sale/saleList"})
-	public String index(Model model) throws IOException {
-		
+//	@GetMapping({"/sale/search"})
+//	public String search() {
+//		
+//	}
+	
+	//@GetMapping({"/sale/saleList"})
+	@RequestMapping({"/sale/saleList"})
+	//public String index(@RequestBody CustomSaleStatusDto test, Model model)  {
+public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
+
 		VendingMachine vendingMachine =  vendingMachineService.findByMerchantName("CVVN100020");		
 		System.out.println("vendingMachine: " + vendingMachine.getMerchantName());
 		//DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-11T11:50:55");
-		DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-26T11:50:55");
-
+		DailySale dailySale = null;
+		if (test.getStartDate() == null) {
+			dailySale = vendingStatusService.findByTheRecentDailySale();
+		}
+		else {
+			dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-26");
+		}
+		System.out.println("test : " + test.toString());
+		
+		System.out.println("getStartDate : " + test.getStartDate());
+		System.out.println("getEndData : " + test.getEndData());
+		System.out.println("getVendingMachine : " + test.getVendingMachine());
+		
 	
 		List<Payment> payments= dailySale.getPayments();
 		System.out.println("payments : " + payments.get(0).getId());
