@@ -93,35 +93,6 @@ s
 			<div class="portlet-body">
 				<div class="row"></div>
 				<div class="row">
-					<!-- 					<div class="col-md-3">
-						<label for="select2-single-input-sm" class="control-label"
-							id="date-label">일자선택</label>
-
-						<div class="input-group date" id="datetimepicker1"
-							data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input"
-								data-target="#datetimepicker1" value="01/11/2020">
-							<div class="input-group-append" data-target="#datetimepicker1"
-								data-toggle="datetimepicker">
-								<div class="input-group-text">
-									<i class="fa fa-calendar"></i>
-								</div>
-							</div>
-						</div>
-
-						<div class="input-group date" id="datetimepicker2"
-							data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input"
-								data-target="#datetimepicker2" value="01/15/2020">
-							<div class="input-group-append" data-target="#datetimepicker2"
-								data-toggle="datetimepicker">
-								<div class="input-group-text">
-									<i class="fa fa-calendar"></i>
-								</div>
-							</div>
-						</div>
-					</div> -->
-
 					<div class="col-md-3">
 						<c:choose>
 							<c:when test="${result.startDate ne null}">
@@ -163,25 +134,16 @@ s
 								<option>CVVN100018</option>
 							</select>
 
-							<%-- <input type="hidden" id="userId" value="0" />
-	<input type="hidden" id="boardId" value="${board.id}" /> --%>
-
-							<!-- <form id="add-form" action="" method="post"> -->
-
-							<!-- <input type="hidden" name="stringStartDate" id="input-stringStartDate"  value="2021-03-26">
-								<input type="hidden" name="stringEndDate" id="input-stringEndDate" value="2021-03-26"> -->
-							<input type="hidden" name="startDate" id="input-startDate">
-							<input type="hidden" name="endDate" id="input-endDate"> <input
-								type="hidden" name="vendingMachine" id="input-vendingMachine"
-								value="CVVN100020"> <input id="input-submit"
-								type="submit" value="보내기" /> <span
-								class="input-group-btn btn-right">
-								<button class="btn green-haze yellow" type="button"
+							<input type="hidden" name="startDate" id="startDate">
+							<input type="hidden" name="endDate" id="endDate"> 
+							<input type="hidden" name="vendingMachine" id="input-vendingMachine" value="CVVN100020">
+							<input id="input-submit" type="submit" value="보내기" />
+							<span class="input-group-btn btn-right">
+								<button class="btn green-haze yellow" type="button" 
 									id="detection-search-button" name="appName"
 									style="margin-left: 10px">
 									검색 <i class="fa fa-search"></i>
 								</button>
-
 							</span>
 
 
@@ -358,9 +320,6 @@ s
 
 <!-- 자동검색 -->
 <script>
-/* 	document.getElementById('input-startDate').value = new Date();
- 	document.getElementById('input-endDate').value = new Date(); */
-
 	$(document).ready(function(){
 	  $("#myInput").on("keyup", function() {
 	    var value = $(this).val().toLowerCase();

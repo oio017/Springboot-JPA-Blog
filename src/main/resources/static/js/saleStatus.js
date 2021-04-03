@@ -12,59 +12,34 @@ let index = {
 
 	clickEventInit: function() {
 		////////////////////////////////////////////////////////////
-		$('#sale-search-button').click(function(e) {
-			alert('조회버턴이 클릭 되었습니다.');
-			var data = new Object;
-			var startDate = new Date();
-			var endDate = new Date();
-
-			data.vendingMachine =  'CVVN100020';
-			data.startDate = startDate;
-			data.endDate = endDate;
-			data.stringStartDate = '2021-03-27';
-			data.stringEndDate = '2021-03-28';
-
-			var xxx = JSON.stringify(data);
-			alert(xxx);
-			$.ajax({
-				type: "POST",
-				dataType: "json",          // ajax 통신으로 받는 타입
-				contentType: "application/json",  // ajax 통신으로 보내는 타입
-				data: xxx,
-			}).done(function(resp) {
-				location.href = "/sale/saleList";
-			}).fail(function(error) {
-				alert(JSON.stringify(error));
-			});
-		});
-		////////////////////////////////////////////////////////////
-		$('#input-submit').click(function(event){
+		$('#input-submit').click(function (event) {
 			event.preventDefault();
 
-			// var data = {};
+			var data = new Object;
+			getQueryData();
+			data.vendingMachine = searchReq.vendingMachine;
+			data.startDate = searchReq.startDate;
+			data.endDate = searchReq.endDate;
 
-			// $.each($(this).serializeArray(), function(index, o) {
-			// 	data[o.name] = o.value
+			var param = "vendingMachine=" + encodeURIComponent(searchReq.vendingMachine) + "&startDate=" + encodeURIComponent(searchReq.startDate) + "&endDate="+encodeURIComponent(searchReq.endDate);
+			var url = '/sale/saleList?'+param;
+			console.log(url);
+			window.location = url;
+			
+			// var xxx = JSON.stringify(data);
+			// alert(xxx);
+			// $.ajax({
+			// 	type: "POST",
+			// 	dataType: "json",          // ajax 통신으로 받는 타입
+			// 	contentType: "application/json",  // ajax 통신으로 보내는 타입
+			// 	data: xxx,
+			// }).done(function(resp) {
+			// 	location.href = "/sale/saleList";
+			// }).fail(function(error) {
+			// 	alert(JSON.stringify(error));
 			// });
-
-					var data = new Object;
-					getQueryData();
-					data.vendingMachine = searchReq.vendingMachine;
-					data.startDate=searchReq.startDate;
-					data.endDate=searchReq.endDate;
-
-
-			$.ajax({
-				url: "/sale/saleList",
-				type: "GET",
-				dataType: "json",          // ajax 통신으로 받는 타입
-				//contentType: "application/json",  // ajax 통신으로 보내는 타입
-				//data: JSON.stringify(data),
-				data: data,
-				success: function(result){
-					console.log(result);
-      			}
-			});
+			
+			//location.reload();
 		////////////////////////////////////////////////////////////
 		});
 	}
@@ -88,14 +63,14 @@ var inquireToServer = function(){
 	}
 }
 
-var getQueryData = function() {
+var getQueryData = function () {
 	var data = $('#search-params').serializeJSON();
 
 	searchReq.startDate=getStartDate(data.startDate);
 	searchReq.endDate=getEndDate(data.endDate);
 	searchReq.vendingMachine = $('#input-vendingMachine').val();
 	
-	console.log(searchReq)
+	console.log("search-params : " + searchReq.startDate);
 	return searchReq;
 }
 
