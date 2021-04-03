@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+@import url("/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css");
+.adminSelectSet{
+	width:100%	
+}
+.adminSelectSet > select{
+	width:80%	
+}
+.adminSelectSet > .adminFind{
+	width:20%	
+}

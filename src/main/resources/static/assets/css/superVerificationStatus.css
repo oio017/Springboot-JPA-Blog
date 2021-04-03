@@ -1,0 +1,7 @@
+#verification-status{
+    font-size: x-large;
+    font-weight: bold;
+}
+.portlet-body.form-horizontal > .form-group{
+    margin-bottom: 0px;
+}

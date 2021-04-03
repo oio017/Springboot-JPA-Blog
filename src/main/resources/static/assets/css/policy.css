@@ -1,0 +1,123 @@
+@import
+	url("/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css")
+	;
+
+.app-button-td {
+	min-width: 253px;
+	max-width: 253px;
+	text-align: center;
+}
+
+.app-button-td .btn {
+	margin-right: 0px;
+}
+
+.form-group:after {
+	display: table;
+}
+
+.form-group {
+	width: 100%;
+	content: " ";
+	display: table;
+	margin-left: -15px;
+	margin-right: -15px;
+	margin-bottom: 5px;
+}
+
+.wide-modal-dialog {
+	width: 900px;
+}
+
+.policy-message {
+	width: 350px;
+}
+
+.filter-message {
+	width: 390px;
+}
+
+hr {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.modal-body {
+	max-height: calc(100vh - 210px);
+	overflow-y: auto;
+}
+
+.custum-margin {
+	margin: 0px;
+}
+
+.scroll-y {
+	max-height: 500px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.policy-sub-title {
+	font-weight: bold;
+	color: black;
+	margin-bottom:22px;
+}
+
+textarea {
+	width: 95% !important;
+	display: inline-block !important;
+}
+
+#in-app-list-modal-x {
+	margin-top: 9px;
+	margin-right: 0px;
+}
+
+.contain-two-body {
+	overflow: auto;
+}
+
+.in-two {
+	font-weight: bold;
+}
+
+.portlet-title .popover {
+	width: 390px;
+	max-width: 390px;
+	color: black;
+}
+
+.block-action-div .popover {
+	width: 390px;
+	max-width: 390px;
+	color: black;
+}
+
+.fa-android {
+	color: #a4c639;
+	font-size:17px !important;
+}
+
+.fa-apple {
+	color: #505050;
+	font-size:17px !important;
+}
+
+.mg-bt-ar{
+	margin: 0px 0px 0px 8px !important;
+}
+
+.mg-bt-ap{
+	margin: 0px 0px 0px 4px !important;
+}
+
+.mg-ar{
+	margin-right:4px !important;
+	margin-left: 7px !important;
+}
+
+.mg-ap{
+	margin-right:4px !important;
+	margin-left: 7px !important;
+}
+

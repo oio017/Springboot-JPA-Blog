@@ -1,0 +1,38 @@
+@CHARSET "UTF-8";
+@import url("/assets/global/plugins/bootstrap-datepicker/css/datepicker.css");
+
+.authInputWrapper{
+	
+}
+.authField {
+	margin-bottom:19px;
+	border-bottom: 2px;
+}
+
+.authRadio{
+	margin-right:40px;
+}
+
+.adminSelectSet{
+	width:100%	
+}
+.adminSelectSet > select{
+	width:80%	
+}
+.adminSelectSet > .adminFind{
+	width:20%	
+}
+.auth-select{
+	width:155px;
+}
+
+thead .id-column{
+	padding-right : 22px !important;
+	padding-left : 5px !important;
+}
+thead .ongan-name-column{
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+	padding-right : 22px !important;
+	padding-left : 5px !important;
+}

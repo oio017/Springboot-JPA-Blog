@@ -4,19 +4,21 @@ import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-@Builder
-@AllArgsConstructor
+//@Getter
+//@Setter
+//@ToString
+//@Builder
+//@AllArgsConstructor
+@Data
 public class CustomSaleStatusDto {
-//    private Date startDate;
-//    private Date endData;
-    private String startDate;
-    private String endData;
     private String vendingMachine;
+	private Date startDate;
+	private Date endDate;
+//    private String stringStartDate;
+//    private String stringEndDate;
 }

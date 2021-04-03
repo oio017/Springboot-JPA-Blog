@@ -1,0 +1,16 @@
+@CHARSET "EUC-KR";
+#bufferRangeInput{
+	margin-left: -40px;
+    margin-top: 6px;
+	
+}
+#renewKey{
+		margin-left: -40px;
+    margin-top: 6px;
+}
+.red{
+	color : red;
+}
+.orange{
+	color : orange;
+}

@@ -1,0 +1,14 @@
+@import url("/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.css");
+.input-mini {
+  width: 240px !important;
+}
+
+.token-detail-table th{
+  padding : 0px !important;
+  width: 25%;
+  background-color: #32c5d2;
+}
+.token-detail-table td{
+  padding : 0px !important;
+  width: 25%;
+}

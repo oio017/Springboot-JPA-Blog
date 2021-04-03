@@ -1,0 +1,4 @@
+@import url("/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.css");
+.input-mini {
+    width: 240px !important;
+}

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cos.blog.dto.CustomSaleStatusDto;
+import com.cos.blog.dto.SearchParams;
 import com.cos.blog.model.Board;
 import com.cos.blog.model.DailySale;
 import com.cos.blog.model.OrderItem;
@@ -28,6 +29,7 @@ import com.cos.blog.service.SlotService;
 import com.cos.blog.service.VendingMachineService;
 import com.cos.blog.service.VendingStatusService;
 import com.cos.blog.util.DataConvert;
+
 
 @Controller
 public class CsvController {
@@ -49,6 +51,7 @@ public class CsvController {
 	
 	@Autowired
 	private DataConvert dataConvert;
+	
 
 	
 //	@GetMapping({"/sale/search"})
@@ -56,11 +59,12 @@ public class CsvController {
 //		
 //	}
 	
-	//@GetMapping({"/sale/saleList"})
-	@RequestMapping({"/sale/saleList"})
+    
+@GetMapping({"/sale/saleList"})
+//@RequestMapping({"/sale/saleList"})
 	//public String index(@RequestBody CustomSaleStatusDto test, Model model)  {
 public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
-
+		SearchParams params = new SearchParams();
 		VendingMachine vendingMachine =  vendingMachineService.findByMerchantName("CVVN100020");		
 		System.out.println("vendingMachine: " + vendingMachine.getMerchantName());
 		//DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-11T11:50:55");
@@ -70,11 +74,24 @@ public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
 		}
 		else {
 			dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-26");
+			
+			System.out.println("test : " + test.toString());
+			
+			System.out.println("getVendingMachine : " + test.getVendingMachine());
+			params.setVendingMachine(test.getVendingMachine());
+			System.out.println("getEndDate : " + test.getEndDate());
+			params.setEndDateLong(test.getEndDate().getTime());
+			System.out.println("getTime : " + test.getEndDate().getTime());
+			params.setStartDateLong(test.getStartDate().getTime());
+			System.out.println("getEndDate : " + test.getEndDate());
+			params.setEndDate(test.getEndDate());
+			params.setStartDate(test.getStartDate());
 		}
-		System.out.println("test : " + test.toString());
+		model.addAttribute("result", params);
+		
 		
 		System.out.println("getStartDate : " + test.getStartDate());
-		System.out.println("getEndData : " + test.getEndData());
+		System.out.println("getEndData : " + test.getEndDate());
 		System.out.println("getVendingMachine : " + test.getVendingMachine());
 		
 	
@@ -110,7 +127,6 @@ public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
 		System.out.println("getUnitPrice : " + dailySale.getPayments().get(0).getOrderItems().get(0).getUnitPrice());
 		
 		return "sale/saleTest";
-
 	}
 	
 //	@GetMapping({"/sale/saleList"})

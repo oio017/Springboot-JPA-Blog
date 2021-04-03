@@ -1,0 +1,6 @@
+@import url("/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.css");
+@import url("/assets/css/jjsonviewer.css");
+.input-mini {
+  width: 240px !important;
+} 	
+

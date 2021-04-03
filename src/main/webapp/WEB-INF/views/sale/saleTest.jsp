@@ -1,16 +1,50 @@
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+
+
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 <%@ include file="../layout/header.jsp"%>
-<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet" />
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" /> -->
 
-<!-- 차크 부트스트랩 -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-	crossorigin="anonymous"></script>
+<!-- ADMIN -->
+<link rel="stylesheet" type="text/css" 	href="/assets/global/css/components.css?v=2.14.2-RELEASE">
+<link rel="stylesheet" type="text/css" 	href="/assets/global/plugins/bootstrap-datepicker/css/datepicker.css">
+<link rel="stylesheet" type="text/css" 	href="/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css">
+<link rel="stylesheet" type="text/css" 	href="/assets/global/plugins/simple-line-icons/simple-line-icons.min.css">
+<link rel="stylesheet" type="text/css" 	href="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.css">
+<link rel="stylesheet" type="text/css" 	href="/assets/css/jjsonviewer.css">
+
+<link rel="shortcut icon" href="/assets/images/favicon.ico">
+s
+<script type="text/javascript"
+	src="/assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+<script type="text/javascript"
+	src="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript"
+	src="/assets/global/plugins/datatables/datatables.min.js"></script>
+<script type="text/javascript"
+	src="/assets/global/plugins/datatables/Buttons-1.6.5/js/dataTables.buttons.js"></script>
+<script type="text/javascript"
+	src="/assets/global/plugins/datatables/Responsive-2.2.6/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript"
+	src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript"
+	src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript"
+	src="/assets/global/plugins/bootstrap-select/bootstrap-select.js"></script>
+<script type="text/javascript"
+	src="/assets/scripts/jquery.spring-friendly.js"></script>
+<script type="text/javascript"
+	src="/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+<script type="text/javascript"
+	src="/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<!-- ADMIN -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+<!-- 차트 부트스트랩 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
 	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -36,8 +70,6 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -61,7 +93,7 @@
 			<div class="portlet-body">
 				<div class="row"></div>
 				<div class="row">
-					<div class="col-md-3">
+					<!-- 					<div class="col-md-3">
 						<label for="select2-single-input-sm" class="control-label"
 							id="date-label">일자선택</label>
 
@@ -88,7 +120,31 @@
 								</div>
 							</div>
 						</div>
+					</div> -->
 
+					<div class="col-md-3">
+						<c:choose>
+							<c:when test="${result.startDate ne null}">
+								<label for="select2-single-input-sm" class="control-label" id="date-label" data-startdate="${result.startDateLong}" data-enddate="${result.endDateLong}"></label>
+							</c:when>
+							<c:otherwise>
+								<label for="select2-single-input-sm" class="control-label" id="date-label"></label>
+							</c:otherwise>
+						</c:choose>
+						<label for="select2-single-input-sm" class="control-label">기간별 검색</label>
+						<div class="input-group">
+							<div class="page-toolbar ">
+								<%-- style="background-color: #716558;" --%>
+								<div id="dashboard-report-range"
+									class="pull-left tooltips btn btn-fit-height"
+									style="border: 1px solid #ccc;" data-placement="bottom"
+									data-original-title="클릭하시면 일자를 수정할수 있습니다.">
+									<i class="icon-calendar"></i>&nbsp; <span
+										class="thin uppercase hidden-xs"> </span>&nbsp; <i
+										class="fa fa-angle-down"></i>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div class="col-md-4">
@@ -107,22 +163,28 @@
 								<option>CVVN100018</option>
 							</select>
 
-	<%-- <input type="hidden" id="userId" value="0" />
+							<%-- <input type="hidden" id="userId" value="0" />
 	<input type="hidden" id="boardId" value="${board.id}" /> --%>
 
-							<form id="add-form" action="" method="post">
+							<!-- <form id="add-form" action="" method="post"> -->
 
-								<input type="hidden" name="startDate" id="input-startDate"  value="2021-03-26">
-								<input type="hidden" name="endData" id="input-endData" value="2021-03-26">
-								<input type="hidden" name="vendingMachine" id="input-vendingMachine" value="CVVN100020">
-								<input id="input-submit" type="submit" value="보내기" />
+							<!-- <input type="hidden" name="stringStartDate" id="input-stringStartDate"  value="2021-03-26">
+								<input type="hidden" name="stringEndDate" id="input-stringEndDate" value="2021-03-26"> -->
+							<input type="hidden" name="startDate" id="input-startDate">
+							<input type="hidden" name="endDate" id="input-endDate"> <input
+								type="hidden" name="vendingMachine" id="input-vendingMachine"
+								value="CVVN100020"> <input id="input-submit"
+								type="submit" value="보내기" /> <span
+								class="input-group-btn btn-right">
+								<button class="btn green-haze yellow" type="button"
+									id="detection-search-button" name="appName"
+									style="margin-left: 10px">
+									검색 <i class="fa fa-search"></i>
+								</button>
 
-							</form>
+							</span>
 
-							<button type="button" id="sale-search-button" class="btn btn-primary"
-								style="margin-left: auto">
-								검색 <i class="fa fa-search"></i>
-							</button>
+
 						</div>
 					</div>
 
@@ -178,29 +240,29 @@
 
 
 											<h6 class="card-text">
-											<table class="table table-striped">
-											<thead>
-												<tr>
-													<th>Slot</th>
-													<th>SlotStatus</th>
-													<th>Stock</th>
-													<th>ProductName</th>
-													<th>Price</th>
-												</tr>
-											</thead>
-											<tbody id="myTable">
-												<c:forEach var="slot" items="${slots}">
-													<tr>
-														<td>${slot.slotNum}</td>
-														<td>${slot.slotStatus}</td>
-														<td>${slot.unitsOnSlot} / ${slot.sizeOnSlot}</td>
-														<td>${slot.product.productName}</td>
-														<td>${slot.product.unitPrice}</td>
-													</tr>
-												</c:forEach>
-											</tbody>
-										</table>
-										</h6>
+												<table class="table table-striped">
+													<thead>
+														<tr>
+															<th>Slot</th>
+															<th>SlotStatus</th>
+															<th>Stock</th>
+															<th>ProductName</th>
+															<th>Price</th>
+														</tr>
+													</thead>
+													<tbody id="myTable">
+														<c:forEach var="slot" items="${slots}">
+															<tr>
+																<td>${slot.slotNum}</td>
+																<td>${slot.slotStatus}</td>
+																<td>${slot.unitsOnSlot}/ ${slot.sizeOnSlot}</td>
+																<td>${slot.product.productName}</td>
+																<td>${slot.product.unitPrice}</td>
+															</tr>
+														</c:forEach>
+													</tbody>
+												</table>
+											</h6>
 
 										</div>
 
@@ -285,16 +347,20 @@
 
 <!--  날짜검색 -->
 <script type="text/javascript">
-	$(function () { 
+	/* $(function () { 
 		$('#datetimepicker1').datetimepicker({ format: 'L'});
 		$('#datetimepicker2').datetimepicker({ format: 'L', useCurrent: false });
 		$("#datetimepicker1").on("change.datetimepicker", function (e) { $('#datetimepicker2').datetimepicker('minDate', e.date); });
 		$("#datetimepicker2").on("change.datetimepicker", function (e) { $('#datetimepicker1').datetimepicker('maxDate', e.date); }); 
 	}); 
+	*/ 
 </script>
 
 <!-- 자동검색 -->
 <script>
+/* 	document.getElementById('input-startDate').value = new Date();
+ 	document.getElementById('input-endDate').value = new Date(); */
+
 	$(document).ready(function(){
 	  $("#myInput").on("keyup", function() {
 	    var value = $(this).val().toLowerCase();
@@ -540,7 +606,7 @@
 									'rgba(255, 99, 132, 1)',
 									'rgba(54, 162, 235, 1)' ],
 							borderWidth : 1
-						} ]
+ 						} ]
 					},
 					options : {
 						scales : {
@@ -552,7 +618,27 @@
 						}
 					}
 				});
-			</script>
+</script>
 
+<!-- <script type="text/javascript" src="/assets/scripts/loadingoverlay.js?v=2.14.2-RELEASE"></script>
+<script type="text/javascript" src="/assets/global/scripts/metronic.js?v=2.14.2-RELEASE"></script>
+<script type="text/javascript" src="/assets/global/plugins/moment.min.js?v=2.14.2-RELEASE"></script>
+<script type="text/javascript" src="/assets/admin/layout/scripts/layout.js"></script>
+<script src="/js/all.js"></script> -->
+<script type="text/javascript" src="/assets/scripts/loadingoverlay.js?v=2.14.2-RELEASE"></script>
+		<script type="text/javascript" src="/assets/global/scripts/metronic.js?v=2.14.2-RELEASE"></script>
+		<script type="text/javascript" src="/assets/global/plugins/moment.min.js?v=2.14.2-RELEASE"></script>
+		<script type="text/javascript" src="/assets/admin/layout/scripts/layout.js?v=2.14.2-RELEASE"></script>
+		<script type="text/javascript" src="/assets/scripts/all.js?v=2.14.2-RELEASE"></script>
+
+    </script><script type="text/javascript" src="/assets/global/plugins/datatables/datatables.min.js"></script>
+<!--     <script type="text/javascript" src="/assets/global/plugins/datatables/Buttons-1.2.2/js/dataTables.buttons.js"></script> -->
+<!--     <script type="text/javascript" src="/assets/global/plugins/datatables/Select-1.2.0/js/dataTables.select.js"></script> -->
+    <script type="text/javascript" src="/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="/assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="/assets/global/plugins/bootstrap-select/bootstrap-select.js"></script>
+    <script type="text/javascript" src="/assets/scripts/jquery.spring-friendly.js"></script>
 <script src="/js/saleStatus.js"></script>
+
 <%@ include file="../layout/footer.jsp"%>
