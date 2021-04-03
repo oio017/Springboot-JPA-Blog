@@ -1,7 +1,12 @@
 package com.cos.blog.controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.json.simple.JSONObject;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cos.blog.dto.CustomSaleStatusDto;
+import com.cos.blog.dto.DailySaleSaveRequestDto;
 import com.cos.blog.dto.SearchParams;
 import com.cos.blog.model.Board;
 import com.cos.blog.model.DailySale;
@@ -29,6 +35,7 @@ import com.cos.blog.service.SlotService;
 import com.cos.blog.service.VendingMachineService;
 import com.cos.blog.service.VendingStatusService;
 import com.cos.blog.util.DataConvert;
+import com.cos.blog.util.DataConvert.EntityType;
 
 
 @Controller
@@ -54,29 +61,98 @@ public class CsvController {
 	
 
 	
-//	@GetMapping({"/sale/search"})
-//	public String search() {
-//		
-//	}
+	public static List<Date> getDaysBetweenDates(Date startdate, Date enddate)
+	{
+	    List<Date> dates = new ArrayList<Date>();
+	    Calendar calendar = new GregorianCalendar();
+	    calendar.setTime(startdate);
+	 
+	    while (calendar.getTime().before(enddate))
+	    {
+	        Date result = calendar.getTime();
+	        dates.add(result);
+	        calendar.add(Calendar.DATE, 1);
+	    }
+	    return dates;
+	}
 	
+	private void makeSubParamsOfDailySale(DailySale dailySale, DailySale eachDailySale) {
+		dailySale.addTotalAccount(eachDailySale.getTotalAccount());
+		dailySale.addTotalRealAccount(eachDailySale.getTotalRealAccount());
+		dailySale.addTotalCnt(eachDailySale.getTotalCnt());
+		dailySale.addTotalSuccessCnt(eachDailySale.getTotalSuccessCnt());
+		dailySale.addTotalRefudCnt(eachDailySale.getTotalRefudCnt());
+		dailySale.addTotalFailCnt(eachDailySale.getTotalFailCnt());
+	}
     
 @GetMapping({"/sale/saleList"})
 //@RequestMapping({"/sale/saleList"})
 	//public String index(@RequestBody CustomSaleStatusDto test, Model model)  {
 public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
 		SearchParams params = new SearchParams();
-		VendingMachine vendingMachine =  vendingMachineService.findByMerchantName("CVVN100020");		
+		VendingMachine vendingMachine =  vendingMachineService.findByMerchantName("CVVN100020");	
 		System.out.println("vendingMachine: " + vendingMachine.getMerchantName());
 		//DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-11T11:50:55");
 		DailySale dailySale = null;
+		List<Payment> payments= null;;
 		if (test.getStartDate() == null) {
 			dailySale = vendingStatusService.findByTheRecentDailySale();
+			payments= dailySale.getPayments();
 		}
 		else {
-			dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-26");
-			
 			System.out.println("test : " + test.toString());
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        System.out.println(dateFormat.format(test.getStartDate()));
+	        System.out.println(dateFormat.format(test.getEndDate()));
+	        String startDate = dateFormat.format(test.getStartDate());
+	        String endDate = dateFormat.format(test.getEndDate());
+	        
+	        List<Date> dates = getDaysBetweenDates(test.getStartDate(), test.getEndDate());
+	        dates.forEach(date ->{
+	        	System.out.println("xxxx: " + dateFormat.format(date));
+	        });
+	        vendingMachine =  vendingMachineService.findByMerchantName(test.getVendingMachine());
+	        List<DailySale>  dailySales = vendingStatusService.findByTheSelectedDailySales(vendingMachine.getId(), startDate, endDate);
+	        // null exception
+	        payments= dailySales.get(0).getPayments();
+	        
+	        dailySale = new DailySale();
+	        dailySale.setDate(startDate+"~"+endDate);
+	        dailySale.setVendingMachine(vendingMachine);
+	        
+	        System.out.println("dailySales.size() : " + dailySales.size());
+	        
+	        
+	        for(int i = 0; i < dailySales.size(); i++) {	
+	        	DailySale daily = dailySales.get(i);
+	        	
+	        	//구해진 dailySales을 하나의 dailySale로 계산한다.
+	        	makeSubParamsOfDailySale(dailySale, daily);
+	        	
+				// saleCntPerSlot[x,x,x,x,x,x ....] 슬롯당 판매수량				
+				dataConvert.addCntPerSlot(EntityType.SALE, daily);
+				
+				// motorErrorCntPerSlot 슬롯당 모터 오류 발생 횟수
+				dataConvert.addCntPerSlot(EntityType.MOTOR, daily);
+
+				// jamCntPerSlot 슬롯당 걸림발생 횟수
+				dataConvert.addCntPerSlot(EntityType.JAM, daily);
+				
+				// Slot별 결재금액 합산
+				dataConvert.addCntPerSlot(EntityType.AMOUNT, daily);
+	        }
+	        
+			String saleCntPerSlot = dataConvert.getCntPerSlot(EntityType.SALE);
+			String motorErrorCntPerSlot = dataConvert.getCntPerSlot(EntityType.MOTOR);
+			String jamCntPerSlot = dataConvert.getCntPerSlot(EntityType.JAM);
+			String amountPerSlot = dataConvert.getWhatPerSlot(EntityType.AMOUNT);
 			
+			dailySale.setSaleCntPerSlot(saleCntPerSlot);
+			dailySale.setJamCntPerSlot(jamCntPerSlot);
+			dailySale.setMotorErrorCntPerSlot(motorErrorCntPerSlot);
+			dailySale.setAmountPerSlot(amountPerSlot);
+	        
+	        
 			System.out.println("getVendingMachine : " + test.getVendingMachine());
 			params.setVendingMachine(test.getVendingMachine());
 			System.out.println("getEndDate : " + test.getEndDate());
@@ -85,8 +161,9 @@ public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
 			params.setStartDateLong(test.getStartDate().getTime());
 			System.out.println("getEndDate : " + test.getEndDate());
 			params.setEndDate(test.getEndDate());
-			params.setStartDate(test.getStartDate());
+			params.setStartDate(test.getStartDate());			
 		}
+		
 		model.addAttribute("result", params);
 		
 		
@@ -95,7 +172,7 @@ public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
 		System.out.println("getVendingMachine : " + test.getVendingMachine());
 		
 	
-		List<Payment> payments= dailySale.getPayments();
+		
 		System.out.println("payments : " + payments.get(0).getId());
 		
 //		payments.forEach(payment -> {
@@ -122,20 +199,12 @@ public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
 		model.addAttribute("slotCnt",  vendingMachine.getDeviceType().getTotalslotCnt());
 		
 		System.out.println("Date : " + dailySale.getDate());
-		System.out.println("getMerchantName : " + dailySale.getVendingMachine().getMerchantName());
-		System.out.println("getOrderId : " + dailySale.getPayments().get(0).getOrderId());
-		System.out.println("getUnitPrice : " + dailySale.getPayments().get(0).getOrderItems().get(0).getUnitPrice());
+//		System.out.println("getMerchantName : " + dailySale.getVendingMachine().getMerchantName());
+//		System.out.println("getOrderId : " + dailySale.getPayments().get(0).getOrderId());
+//		System.out.println("getUnitPrice : " + dailySale.getPayments().get(0).getOrderItems().get(0).getUnitPrice());
 		
 		return "sale/saleTest";
 	}
-	
-//	@GetMapping({"/sale/saleList"})
-//	public String index(Model model) throws IOException { 
-//		JSONObject jsonObject = csvService.csvFileToJsonObject();
-//		model.addAttribute("sales",  jsonObject);
-//		
-//		return "sale/saleTest";
-//	}
 	
 	
 }

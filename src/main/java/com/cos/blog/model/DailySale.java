@@ -98,6 +98,22 @@ public class DailySale {
 	public void addTotalAccount(int account) {
 		this.totalAccount += account;
 	}
+	public void addTotalRealAccount(int account) {
+		this.totalRealAccount += account;
+	}
+	public void addTotalCnt(int account) {
+		this.totalCnt += account;
+	}
+	public void addTotalSuccessCnt(int cnt) {
+		this.totalSuccessCnt += cnt;
+	}
+	public void addTotalRefudCnt(int cnt) {
+		this.totalRefudCnt += cnt;
+	}
+	public void addTotalFailCnt(int cnt) {
+		this.totalFailCnt += cnt;
+	}
+	
 	public void addTotalRefudAccount(int account) {
 		this.totalRefudAccount += account;
 	}

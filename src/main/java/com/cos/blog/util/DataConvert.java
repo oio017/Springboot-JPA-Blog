@@ -7,6 +7,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 
+import com.cos.blog.model.DailySale;
 import com.cos.blog.model.OrderItem;
 
 @Component
@@ -159,6 +160,78 @@ public class DataConvert {
 		}
 	}
 	
+	public void addCntPerSlot(EntityType type, DailySale dailySale) {
+		String slotInfo = null;
+		JSONArray cntPerSlotJsonArray = null;
+		ArrayList<Integer> cntPerSlotList = null;
+		if (type == EntityType.SALE) {
+			slotInfo = dailySale.getSaleCntPerSlot();
+			cntPerSlotJsonArray = saleCntPerSlotJsonArray;	
+			cntPerSlotList = saleCntPerSlotList;
+		}
+		else if (type == EntityType.MOTOR) {
+			slotInfo = dailySale.getMotorErrorCntPerSlot();
+			cntPerSlotJsonArray = motorErrorCntPerSlotJsonArray;	
+			cntPerSlotList = motorErrorCntPerSlotList;
+		}
+		else if (type == EntityType.JAM) {
+			slotInfo = dailySale.getJamCntPerSlot();
+			cntPerSlotJsonArray = jamCntPerSlotJsonArray;	
+			cntPerSlotList = jamCntPerSlotList;
+		}
+		else if (type == EntityType.AMOUNT) {
+			slotInfo = dailySale.getAmountPerSlot();
+			cntPerSlotJsonArray = amountPerSlotJsonArray;	
+			cntPerSlotList = amountPerSlotList;
+		}
+		
+		System.out.println("slotInfo: " + slotInfo);
+		JSONParser parser = new JSONParser(); 
+		try {
+			System.out.println("Init JsonArray: " + type.toString());
+			cntPerSlotJsonArray = (JSONArray)parser.parse(slotInfo);
+			System.out.println(type.toString() + "_cntPerSlotJsonArray: " + cntPerSlotJsonArray.toJSONString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}	
+		
+		int value;
+		int size = cntPerSlotJsonArray.size();
+		size = 50;
+		if (cntPerSlotList == null) {
+			cntPerSlotList = new ArrayList<Integer>();
+			for(int i = 0; i < size; i++)
+				cntPerSlotList.add(0);
+		}
+		
+		System.out.println(type.toString() + "cntPerSlotList_size: " + size);
+		System.out.println(type.toString() + "cntPerSlotJsonArray_size: " + size);
+		
+		for(int i = 0; i < size; i++) {
+			value = cntPerSlotList.get(i) + Integer.parseInt(String.valueOf(cntPerSlotJsonArray.get(i)));; 
+			cntPerSlotList.set(i, value);
+		}
+		System.out.println(type.toString() + "_cntPerSlotList: " + cntPerSlotList.toString());
+		
+		if (type == EntityType.SALE) {
+			saleCntPerSlotJsonArray = cntPerSlotJsonArray;	
+			saleCntPerSlotList = cntPerSlotList;
+		}
+		else if (type == EntityType.MOTOR) {
+			motorErrorCntPerSlotJsonArray = cntPerSlotJsonArray;	
+			motorErrorCntPerSlotList = cntPerSlotList;
+		}
+		else if (type == EntityType.JAM) {
+			jamCntPerSlotJsonArray = cntPerSlotJsonArray;	
+			jamCntPerSlotList = cntPerSlotList;
+		}
+		else if (type == EntityType.AMOUNT) {
+			amountPerSlotJsonArray = cntPerSlotJsonArray;	
+			amountPerSlotList = cntPerSlotList;
+		}
+	}
+
+	
 	public String getCntPerSlot(EntityType type) {
 		String cntPerSlot = null;
 		StringBuilder sb = new StringBuilder();
@@ -172,6 +245,9 @@ public class DataConvert {
 		}
 		else if (type == EntityType.JAM) {	
 			cntPerSlotList = jamCntPerSlotList;
+		}
+		else if (type == EntityType.AMOUNT) {	
+			cntPerSlotList = amountPerSlotList;
 		}
 		
 		System.out.println(type.toString() + "_cntPerSlotList : " + cntPerSlotList.toString());

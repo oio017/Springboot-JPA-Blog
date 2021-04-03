@@ -21,4 +21,5 @@ public class CustomSaleStatusDto {
 	private Date endDate;
 //    private String stringStartDate;
 //    private String stringEndDate;
+
 }

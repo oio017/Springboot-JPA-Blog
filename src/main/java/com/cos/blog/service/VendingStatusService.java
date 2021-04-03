@@ -1,14 +1,12 @@
 package com.cos.blog.service;
 
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.blog.dto.DailySaleSaveRequestDto;
-import com.cos.blog.dto.PaymentInfoDto;
 import com.cos.blog.dto.SlotUpdateRequestDto;
-import com.cos.blog.model.Board;
 import com.cos.blog.model.DailySale;
 import com.cos.blog.model.EventLog;
 import com.cos.blog.model.Payment;
@@ -24,9 +22,7 @@ import com.cos.blog.repository.SlotRepository;
 import com.cos.blog.repository.VendingMachineRepository;
 import com.cos.blog.util.DataConvert;
 import com.cos.blog.util.DataConvert.EntityType;
-import com.cos.blog.util.DataConvert.PaymentType;
 
-import antlr.collections.List;
 import type.EventType;
 
 
@@ -75,6 +71,13 @@ public class VendingStatusService {
 					return new IllegalArgumentException("등록된 판매정보가 없습니다.");
 				});
 	}
+	
+	@Transactional(readOnly = true)
+	public List<DailySale> findByTheSelectedDailySales(int vendingMachine, String startDate, String endDate) {
+		return dailySaleRepository.findByTheSelectedDailySales(vendingMachine, startDate, endDate);
+	}
+	
+	
 	
 	@Transactional // DB(CRUD) 모든 행위가  정상적으로 처리되어야 성공처리. 
 	public void dailySaleSave(DailySaleSaveRequestDto dailySaleSaveRequestDto) {
@@ -156,14 +159,12 @@ public class VendingStatusService {
 	
 			payment.getOrderItems().forEach(orderItem -> {
 				System.out.println("orderItem : " + orderItem.toString());
-				// saleCntPerSlot[x,x,x,x,x,x ....] 슬롯당 판매수량
-				
+				// saleCntPerSlot[x,x,x,x,x,x ....] 슬롯당 판매수량				
 				dataConvert.addCntPerSlot(EntityType.SALE, slotNames, orderItem.getSlotId(), orderItem.getQuantity());
 				
 				// motorErrorCntPerSlot 슬롯당 모터 오류 발생 횟수
 				dataConvert.addCntPerSlot(EntityType.MOTOR, slotNames, orderItem.getSlotId(), orderItem.getDispensingFailItems());
 
-				// 현재 아래 정보는 알수 없음. --> TODO : 이후 버전에 다시 구현할 것.
 				// jamCntPerSlot 슬롯당 걸림발생 횟수
 				dataConvert.addCntPerSlot(EntityType.JAM, slotNames, orderItem.getSlotId(), payment.getPayment().getRefundItems());
 				
