@@ -1,5 +1,7 @@
 package com.cos.blog.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,8 +104,9 @@ public class VendingStatusService {
 		
 		//  2. DailySaleRepository
 		DailySale dailySale = new DailySale();
-		dailySale.setVendingMachine(vendingMachine);
-		dailySale.setDate(dailySaleSaveRequestDto.getDate());
+		dailySale.setVendingMachine(vendingMachine); 
+		//DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dailySale.setDate(dailySaleSaveRequestDto.getDate().substring(0, 10));
 		dailySale.setEventLog(eventLog);
 		
 		System.out.println("before makeSubParamsOfDailySale");
@@ -137,22 +140,22 @@ public class VendingStatusService {
 		
 		dataConvert.init();
 		dto.getPayments().forEach(payment ->{
-			Payment paymentDetails = payment.getPayment();
-			System.out.println("paymentDetails.id : " + paymentDetails.getId());
+			Payment paymentDetail = payment.getPayment();
+			System.out.println("paymentDetails.id : " + paymentDetail.getId());
 
 			// 실제 viettelPay 일 경우만 금액 합산
-			if (paymentDetails.getPaymentMethodId() == 1) {
+			if (paymentDetail.getPaymentMethodId() == 1) {
 				// totalAccount 결재시도 금액
-				dailySale.addTotalAccount(paymentDetails.getAmount());
+				dailySale.addTotalAccount(paymentDetail.getAmount());
 				
 				// totalRefudAccount
-				dailySale.addTotalRefudAccount(paymentDetails.getRefund());
+				dailySale.addTotalRefudAccount(paymentDetail.getRefund());
 				
 				// totalRefudCnt/totalFailCnt 환불 성공 건수
-				if (paymentDetails.getRefund() > 0) {
-					if (paymentDetails.isRefundResult())
+				if (paymentDetail.getRefund() > 0) {
+					if (paymentDetail.isRefundResult())
 						dailySale.increaseTotalRefudCnt();
-					if (!paymentDetails.isRefundResult())
+					if (!paymentDetail.isRefundResult())
 						dailySale.increaseTotalFailCnt();
 				}
 			}
@@ -166,7 +169,7 @@ public class VendingStatusService {
 				dataConvert.addCntPerSlot(EntityType.MOTOR, slotNames, orderItem.getSlotId(), orderItem.getDispensingFailItems());
 
 				// jamCntPerSlot 슬롯당 걸림발생 횟수
-				dataConvert.addCntPerSlot(EntityType.JAM, slotNames, orderItem.getSlotId(), payment.getPayment().getRefundItems());
+				dataConvert.addCntPerSlot(EntityType.JAM, slotNames, orderItem.getSlotId(), orderItem.getDispensingFailItems());
 				
 				// Slot별 결재금액 합산
 				dataConvert.addMoneyPerSlot(EntityType.AMOUNT, slotNames, payment.getPayment().getPaymentMethodId(), orderItem);

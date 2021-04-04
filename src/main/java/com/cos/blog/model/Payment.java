@@ -84,7 +84,8 @@ public class Payment {
 	@ColumnDefault("0") // 판매된 제품 수량
 	private int salesItems;
 
-	@Column(nullable = false, length = 20)
+	//@Column(nullable = false, length = 20)
+	@Column(length = 20)
 	private String transactionId;
 	
 	@JsonIgnoreProperties({ "payment" }) // 무한참조 방지 (참조 : https://getinthere.tistory.com/34)

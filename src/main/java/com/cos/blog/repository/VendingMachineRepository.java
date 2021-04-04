@@ -3,6 +3,8 @@ package com.cos.blog.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 import java.util.Optional;
 
 import com.cos.blog.model.VendingMachine;
@@ -14,4 +16,5 @@ public interface VendingMachineRepository extends JpaRepository<VendingMachine, 
 	
 	Optional<VendingMachine> findByMerchantName(String merchantName);
 
+	List<VendingMachine> findByOrderByMerchantNameAsc();
 }

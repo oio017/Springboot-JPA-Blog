@@ -92,10 +92,8 @@ public class DataConvert {
 		}
 		return arrayList;
 	}
-	
 
 	public void addCntPerSlot(EntityType type, String slotNames, int slotId, int quantity) {
-		
 		JSONArray cntPerSlotJsonArray = null;
 		ArrayList<Integer> cntPerSlotList = null;
 		if (type == EntityType.SALE) {
@@ -111,11 +109,10 @@ public class DataConvert {
 			cntPerSlotList = jamCntPerSlotList;
 		}
 		
-		System.out.println("slotNames: " + slotNames);
 		JSONParser parser = new JSONParser();
 		if (cntPerSlotJsonArray == null) {
 			try {
-				System.out.println("Init JsonArray: " + type.toString());
+				System.out.println("Init slotNames: " + type.toString());
 				cntPerSlotJsonArray = (JSONArray)parser.parse(slotNames);
 				System.out.println(type.toString() + "_cntPerSlotJsonArray: " + cntPerSlotJsonArray.toJSONString());
 			} catch (ParseException e) {
@@ -127,8 +124,10 @@ public class DataConvert {
 		
 		int index = -1;
 		for(int i = 0; i < size; i++) {
-			if ( cntPerSlotJsonArray.get(i).toString().equals(Integer.toString(slotId)) )
+			if ( cntPerSlotJsonArray.get(i).toString().equals(Integer.toString(slotId)) ) {
 				index = i;
+				break;
+			}
 		}
 		
 		System.out.println("index: " + index);
@@ -140,8 +139,7 @@ public class DataConvert {
 				cntPerSlotList.add(0);
 		}
 		int value = cntPerSlotList.get(index) + quantity;
-		System.out.println("value: " + value);
-		//cntPerSlotList.add(index, value); 
+		System.out.println("value: " + value); 
 		cntPerSlotList.set(index, value);
 		
 		System.out.println(type.toString() + "_cntPerSlotList: " + cntPerSlotList.toString());
@@ -197,7 +195,6 @@ public class DataConvert {
 		
 		int value;
 		int size = cntPerSlotJsonArray.size();
-		size = 50;
 		if (cntPerSlotList == null) {
 			cntPerSlotList = new ArrayList<Integer>();
 			for(int i = 0; i < size; i++)
@@ -231,7 +228,6 @@ public class DataConvert {
 		}
 	}
 
-	
 	public String getCntPerSlot(EntityType type) {
 		String cntPerSlot = null;
 		StringBuilder sb = new StringBuilder();
@@ -253,6 +249,8 @@ public class DataConvert {
 		System.out.println(type.toString() + "_cntPerSlotList : " + cntPerSlotList.toString());
 		int value;
 		int size = cntPerSlotList.size();
+		System.out.println(type.toString() + "_cntPerSlotList : " + cntPerSlotList.toString());
+		System.out.println(type.toString() + "_cntPerSlotList.size() : " + size);
 		sb.append("[");
 		for(int i = 0; i < size; i++) {
 			value = cntPerSlotList.get(i);
@@ -280,9 +278,9 @@ public class DataConvert {
 		JSONParser parser = new JSONParser();
 		if (whatPerSlotJsonArray == null) {
 			try {
-				System.out.println("slotNames: " + slotNames);
+				System.out.println("Init slotNames: " + slotNames);
 				whatPerSlotJsonArray = (JSONArray)parser.parse(slotNames);
-				System.out.println(type + "amountPerSlotJsonArray: " + whatPerSlotJsonArray.toJSONString());
+				System.out.println(type.toString() + "amountPerSlotJsonArray: " + whatPerSlotJsonArray.toJSONString());
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}			
@@ -311,9 +309,8 @@ public class DataConvert {
 			int price = orderItem.getUnitPrice();
 			int dispensingFailItems = orderItem.getDispensingFailItems();
 			int value = whatPerSlotList.get(index) + price*(quantity - dispensingFailItems);
-			System.out.println("value: " + value);
-			//whatPerSlotList.add(index, value);			
-			whatPerSlotList.add(index, value);
+			System.out.println("value: " + value);			
+			whatPerSlotList.set(index, value);
 		}
 		
 		System.out.println(type.toString() + "_wPerSlotList: " + whatPerSlotList.toString());

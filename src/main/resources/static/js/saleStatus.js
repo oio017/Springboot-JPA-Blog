@@ -12,7 +12,7 @@ let index = {
 
 	clickEventInit: function() {
 		////////////////////////////////////////////////////////////
-		$('#input-submit').click(function (event) {
+		$('#detection-search-button').click(function (event) {
 			event.preventDefault();
 
 			var data = new Object;
@@ -40,8 +40,14 @@ let index = {
 			// });
 			
 			//location.reload();
-		////////////////////////////////////////////////////////////
 		});
+		////////////////////////////////////////////////////////////
+		$('#sel-vending-machine').change(function () {
+			var name = $('#sel-vending-machine').val();
+			//$('#input-vending-machine').val = test;
+			document.getElementById("input-vending-machine").value =name;
+		});
+		////////////////////////////////////////////////////////////
 	}
 	//clickEventInit
 }
@@ -68,7 +74,7 @@ var getQueryData = function () {
 
 	searchReq.startDate=getStartDate(data.startDate);
 	searchReq.endDate=getEndDate(data.endDate);
-	searchReq.vendingMachine = $('#input-vendingMachine').val();
+	searchReq.vendingMachine = $('#input-vending-machine').val();
 	
 	console.log("search-params : " + searchReq.startDate);
 	return searchReq;
@@ -196,7 +202,7 @@ var InitFunction = function() {
 		},
 		// initDashboardDaterange : function()
 		clickEventInit: function(){
-			$('#detection-search-button').click(function(e){
+			$('#xxxxxx').click(function(e){
 				e.preventDefault();
                 var startDate = getStartDate($('#startDate').val());
                 var endDate = getEndDate($('#endDate').val());
@@ -261,6 +267,10 @@ $(document).ready(
 		$('#startDate, endDate').change(function() {
 			oTable.draw();
 		});
+
+		//select vendingMachine 초기설정
+		document.getElementById("sel-vending-machine").value =$('#input-vending-machine').val();
+	  
 	}
 );
 // $(document).ready(

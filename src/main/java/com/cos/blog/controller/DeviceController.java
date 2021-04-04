@@ -45,7 +45,7 @@ public class DeviceController {
 		}
 		
 		@GetMapping("/deviceType/list")
-		public String deviceTypeList(Model model, @PageableDefault(size=2, sort="id", direction=Sort.Direction.DESC) Pageable pageable) { 
+		public String deviceTypeList(Model model, @PageableDefault(size=10, sort="id", direction=Sort.Direction.DESC) Pageable pageable) { 
 			model.addAttribute("deviceTypes", devcieService.deviceTypeList(pageable)); // Collection Data
 			
 			return "device/deviceTypeList";
@@ -66,7 +66,7 @@ public class DeviceController {
 		}
 		
 		@GetMapping("/vendingMachine/list")
-		public String vendingMachineList(Model model, @PageableDefault(size=2, sort="id", direction=Sort.Direction.DESC) Pageable pageable) { 
+		public String vendingMachineList(Model model, @PageableDefault(size=10, sort="id", direction=Sort.Direction.DESC) Pageable pageable) { 
 			model.addAttribute("vendingMachines", vendingMachineService.vendingMachineList(pageable)); // Collection Data
 			
 			return "device/machineList";

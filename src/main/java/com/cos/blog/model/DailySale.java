@@ -1,6 +1,7 @@
 package com.cos.blog.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -95,6 +96,13 @@ public class DailySale {
 	@CreationTimestamp
 	private Timestamp createDate;
 
+	public void addPaymentList(List<Payment> payments) {
+		if (this.payments == null)
+				this.payments = new ArrayList<Payment>();
+		
+		this.payments.addAll(payments);
+	}
+	
 	public void addTotalAccount(int account) {
 		this.totalAccount += account;
 	}

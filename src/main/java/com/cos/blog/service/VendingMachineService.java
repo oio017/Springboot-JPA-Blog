@@ -1,5 +1,7 @@
 package com.cos.blog.service;
 
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -52,6 +54,14 @@ public class VendingMachineService {
 					return new IllegalArgumentException("해당 자판기 정보를 찾을 수가 없습니다.");
 				});
 	}
+	
+	@Transactional(readOnly = true)
+	public List<VendingMachine> findAll() {
+		return vendingMachineRepository.findByOrderByMerchantNameAsc();
+	}
+	
+	
+	
 	
 	
 }

@@ -1,4 +1,4 @@
-package com.cos.blog.controller;
+package com.cos.blog.controller.api;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -39,7 +39,7 @@ import com.cos.blog.util.DataConvert.EntityType;
 
 
 @Controller
-public class CsvController {
+public class SaleSearchApiController {
 
 	@Autowired
 	private CsvService csvService;
@@ -79,6 +79,8 @@ public class CsvController {
 	private void makeSubParamsOfDailySale(DailySale dailySale, DailySale eachDailySale) {
 		dailySale.addTotalAccount(eachDailySale.getTotalAccount());
 		dailySale.addTotalRealAccount(eachDailySale.getTotalRealAccount());
+		dailySale.addTotalRefudAccount(eachDailySale.getTotalRefudAccount());
+		
 		dailySale.addTotalCnt(eachDailySale.getTotalCnt());
 		dailySale.addTotalSuccessCnt(eachDailySale.getTotalSuccessCnt());
 		dailySale.addTotalRefudCnt(eachDailySale.getTotalRefudCnt());
@@ -86,73 +88,78 @@ public class CsvController {
 	}
     
 @GetMapping({"/sale/saleList"})
-//@RequestMapping({"/sale/saleList"})
-	//public String index(@RequestBody CustomSaleStatusDto test, Model model)  {
 public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
 		SearchParams params = new SearchParams();
-		VendingMachine vendingMachine =  vendingMachineService.findByMerchantName("CVVN100020");	
-		System.out.println("vendingMachine: " + vendingMachine.getMerchantName());
-		//DailySale dailySale = vendingStatusService.findByVendingMachineIdAndDate(vendingMachine.getId(), "2021-03-11T11:50:55");
+		VendingMachine vendingMachine =  null;	
 		DailySale dailySale = null;
 		List<Payment> payments= null;;
+		List<VendingMachine> vendingMachines = vendingMachineService.findAll();
+		
 		if (test.getStartDate() == null) {
 			dailySale = vendingStatusService.findByTheRecentDailySale();
+			vendingMachine = dailySale.getVendingMachine();
 			payments= dailySale.getPayments();
+			System.out.println("The recent vendingMachine: " + vendingMachine.getMerchantName());
 		}
 		else {
 			System.out.println("test : " + test.toString());
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	        System.out.println(dateFormat.format(test.getStartDate()));
-	        System.out.println(dateFormat.format(test.getEndDate()));
 	        String startDate = dateFormat.format(test.getStartDate());
 	        String endDate = dateFormat.format(test.getEndDate());
+	        System.out.println("startDate : " + startDate);
+	        System.out.println("endDate : " + endDate);
 	        
 	        List<Date> dates = getDaysBetweenDates(test.getStartDate(), test.getEndDate());
 	        dates.forEach(date ->{
-	        	System.out.println("xxxx: " + dateFormat.format(date));
+	        	System.out.println("date: " + dateFormat.format(date));
 	        });
 	        vendingMachine =  vendingMachineService.findByMerchantName(test.getVendingMachine());
+	        System.out.println("The selected vendingMachine: " + vendingMachine.getMerchantName());
+	        System.out.println("Query condition : id " + vendingMachine.getId() + ", startDate : " + startDate + ", endDate : " + endDate);
 	        List<DailySale>  dailySales = vendingStatusService.findByTheSelectedDailySales(vendingMachine.getId(), startDate, endDate);
-	        // null exception
-	        payments= dailySales.get(0).getPayments();
-	        
+	        int dailySale_size = dailySales.size();
 	        dailySale = new DailySale();
 	        dailySale.setDate(startDate+"~"+endDate);
 	        dailySale.setVendingMachine(vendingMachine);
 	        
 	        System.out.println("dailySales.size() : " + dailySales.size());
 	        
-	        
-	        for(int i = 0; i < dailySales.size(); i++) {	
-	        	DailySale daily = dailySales.get(i);
-	        	
-	        	//구해진 dailySales을 하나의 dailySale로 계산한다.
-	        	makeSubParamsOfDailySale(dailySale, daily);
-	        	
-				// saleCntPerSlot[x,x,x,x,x,x ....] 슬롯당 판매수량				
-				dataConvert.addCntPerSlot(EntityType.SALE, daily);
-				
-				// motorErrorCntPerSlot 슬롯당 모터 오류 발생 횟수
-				dataConvert.addCntPerSlot(EntityType.MOTOR, daily);
+	        if (dailySale_size > 0) {
+		        dataConvert.init();
+		        for(int i = 0; i < dailySale_size; i++) {
+		        	DailySale daily = dailySales.get(i);
+		        	
+		        	//구해진 dailySales을 하나의 dailySale로 계산한다.
+		        	makeSubParamsOfDailySale(dailySale, daily);
+		        	
+					// saleCntPerSlot[x,x,x,x,x,x ....] 슬롯당 판매수량				
+					dataConvert.addCntPerSlot(EntityType.SALE, daily);
+					
+					// motorErrorCntPerSlot 슬롯당 모터 오류 발생 횟수
+					dataConvert.addCntPerSlot(EntityType.MOTOR, daily);
 
-				// jamCntPerSlot 슬롯당 걸림발생 횟수
-				dataConvert.addCntPerSlot(EntityType.JAM, daily);
+					// jamCntPerSlot 슬롯당 걸림발생 횟수
+					dataConvert.addCntPerSlot(EntityType.JAM, daily);
+					
+					// Slot별 결재금액 합산
+					dataConvert.addCntPerSlot(EntityType.AMOUNT, daily);
+					
+			        // 임시로 Stack Overflow 방지하기위하여 80개 까지만 결재정보 담음.
+			        payments= dailySales.get(i).getPayments();
+			        if (dailySale.getPayments() == null || dailySale.getPayments().size() < 80)
+			        	dailySale.addPaymentList(payments);
+		        }
+		   
+				String saleCntPerSlot = dataConvert.getCntPerSlot(EntityType.SALE);
+				String motorErrorCntPerSlot = dataConvert.getCntPerSlot(EntityType.MOTOR);
+				String jamCntPerSlot = dataConvert.getCntPerSlot(EntityType.JAM);
+				String amountPerSlot = dataConvert.getWhatPerSlot(EntityType.AMOUNT);
 				
-				// Slot별 결재금액 합산
-				dataConvert.addCntPerSlot(EntityType.AMOUNT, daily);
+				dailySale.setSaleCntPerSlot(saleCntPerSlot);
+				dailySale.setJamCntPerSlot(jamCntPerSlot);
+				dailySale.setMotorErrorCntPerSlot(motorErrorCntPerSlot);
+				dailySale.setAmountPerSlot(amountPerSlot);
 	        }
-	        
-			String saleCntPerSlot = dataConvert.getCntPerSlot(EntityType.SALE);
-			String motorErrorCntPerSlot = dataConvert.getCntPerSlot(EntityType.MOTOR);
-			String jamCntPerSlot = dataConvert.getCntPerSlot(EntityType.JAM);
-			String amountPerSlot = dataConvert.getWhatPerSlot(EntityType.AMOUNT);
-			
-			dailySale.setSaleCntPerSlot(saleCntPerSlot);
-			dailySale.setJamCntPerSlot(jamCntPerSlot);
-			dailySale.setMotorErrorCntPerSlot(motorErrorCntPerSlot);
-			dailySale.setAmountPerSlot(amountPerSlot);
-	        
-	        
 			System.out.println("getVendingMachine : " + test.getVendingMachine());
 			params.setVendingMachine(test.getVendingMachine());
 			System.out.println("getEndDate : " + test.getEndDate());
@@ -166,45 +173,21 @@ public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
 		
 		model.addAttribute("result", params);
 		
-		
 		System.out.println("getStartDate : " + test.getStartDate());
 		System.out.println("getEndData : " + test.getEndDate());
 		System.out.println("getVendingMachine : " + test.getVendingMachine());
 		
-	
-		
-		System.out.println("payments : " + payments.get(0).getId());
-		
-//		payments.forEach(payment -> {
-//			List<OrderItem> orderItems =  payment.getOrderItems();
-//			
-//			orderItems.forEach(orderItem -> {
-//				System.out.println("orderItem : " + orderItem.getId());
-//			});
-//		});
-		
 		List<Slot> slots = slotService.findByVendingMachineId(vendingMachine.getId());
-//		slots.forEach(slot -> {
-//			System.out.println("getSlotId : " + slot.getSlotId());
-//			System.out.println("ProductName : " + slot.getProduct().getProductName());
-//		});
-		
+		model.addAttribute("vendingMachines",  vendingMachines);
 		model.addAttribute("slots",  slots);
 		model.addAttribute("dailySale",  dailySale);
 		model.addAttribute("slotNames", vendingMachine.getDeviceType().getSlotName());
 		
 		ArrayList<Integer> slotNamesArray = dataConvert.makeRowColumnSlotName1(vendingMachine.getDeviceType().getSlotName());
 		model.addAttribute("slotNamesArray",  slotNamesArray);
-		
 		model.addAttribute("slotCnt",  vendingMachine.getDeviceType().getTotalslotCnt());
-		
-		System.out.println("Date : " + dailySale.getDate());
-//		System.out.println("getMerchantName : " + dailySale.getVendingMachine().getMerchantName());
-//		System.out.println("getOrderId : " + dailySale.getPayments().get(0).getOrderId());
-//		System.out.println("getUnitPrice : " + dailySale.getPayments().get(0).getOrderItems().get(0).getUnitPrice());
-		
-		return "sale/saleTest";
+				
+		return "sale/saleDateVending";
 	}
-	
-	
+
 }

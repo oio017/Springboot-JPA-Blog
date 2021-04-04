@@ -16,7 +16,7 @@ import com.cos.blog.model.Slot;
 import com.cos.blog.service.VendingStatusService;
 
 @RestController
-public class VendingApiController {
+public class SaleUpdateApiController {
 
 	@Autowired
 	private VendingStatusService vendingStatusService;
@@ -27,14 +27,6 @@ public class VendingApiController {
 
 		System.out.println("getMerchantName : " + dailySaleSaveRequestDto.getMerchantName());
 		System.out.println("getDate : " + dailySaleSaveRequestDto.getDate());
-		dailySaleSaveRequestDto.getPayments().forEach(payment -> {
-			System.out.println("paymentInfo : " + payment.toString());
-
-			payment.getOrderItems().forEach(orderItem -> {
-				System.out.println("orderItem : " + orderItem.toString());
-			});
-		});
-
 		vendingStatusService.dailySaleSave(dailySaleSaveRequestDto);
 
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
@@ -46,12 +38,6 @@ public class VendingApiController {
 
 		System.out.println("getMerchantName : " + slotUpdateRequestDto.getMerchantName());
 		System.out.println("getDate : " + slotUpdateRequestDto.getDate());
-//		slotUpdateRequestDto.getProductToSlots().forEach(productToSlot -> {
-//
-//			Product product = productToSlot.getProduct();
-//			Slot slot = productToSlot.getSlot();
-//		});
-
 		vendingStatusService.slotUpdate(slotUpdateRequestDto);
 
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
