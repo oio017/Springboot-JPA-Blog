@@ -1,7 +1,3 @@
-
-
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -16,7 +12,6 @@
 <link rel="stylesheet" type="text/css" 	href="/assets/css/jjsonviewer.css">
 
 <link rel="shortcut icon" href="/assets/images/favicon.ico">
-s
 <script type="text/javascript"
 	src="/assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
 <script type="text/javascript"
@@ -85,9 +80,8 @@ s
 				<i class="fa fa-search"></i> <span
 					class="caption-subject font-dark bold">기간/머신별 현황조회</span>
 			</div>
-			
-
 		</div>
+		
 		<form id="search-params">
 
 			<div class="portlet-body">
@@ -152,12 +146,9 @@ s
 		Merchant Code : <span id="id"><i>${dailySale.vendingMachine.merchantName}
 		</i></span><br /> Date : <span><I>${dailySale.date} </I></span>
 	</div>
-	<hr />
 
 	<div class="card bg-light">
 		<div class="card-body">
-
-
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-3">
@@ -692,12 +683,11 @@ var jammedChart = new Chart(jammedCtx, {
 <script type="text/javascript" src="/assets/admin/layout/scripts/layout.js"></script>
 <script src="/js/all.js"></script> -->
 <script type="text/javascript" src="/assets/scripts/loadingoverlay.js?v=2.14.2-RELEASE"></script>
-		<script type="text/javascript" src="/assets/global/scripts/metronic.js?v=2.14.2-RELEASE"></script>
-		<script type="text/javascript" src="/assets/global/plugins/moment.min.js?v=2.14.2-RELEASE"></script>
-		<script type="text/javascript" src="/assets/admin/layout/scripts/layout.js?v=2.14.2-RELEASE"></script>
-		<script type="text/javascript" src="/assets/scripts/all.js?v=2.14.2-RELEASE"></script>
-
-    </script><script type="text/javascript" src="/assets/global/plugins/datatables/datatables.min.js"></script>
+<script type="text/javascript" src="/assets/global/scripts/metronic.js?v=2.14.2-RELEASE"></script>
+<script type="text/javascript" src="/assets/global/plugins/moment.min.js?v=2.14.2-RELEASE"></script>
+<script type="text/javascript" src="/assets/admin/layout/scripts/layout.js?v=2.14.2-RELEASE"></script>
+<script type="text/javascript" src="/assets/scripts/all.js?v=2.14.2-RELEASE"></script>
+<script type="text/javascript" src="/assets/global/plugins/datatables/datatables.min.js"></script>
 <!--     <script type="text/javascript" src="/assets/global/plugins/datatables/Buttons-1.2.2/js/dataTables.buttons.js"></script> -->
 <!--     <script type="text/javascript" src="/assets/global/plugins/datatables/Select-1.2.0/js/dataTables.select.js"></script> -->
     <script type="text/javascript" src="/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>

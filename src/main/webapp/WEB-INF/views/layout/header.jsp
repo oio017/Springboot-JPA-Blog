@@ -69,17 +69,6 @@
     </div>
   </div><!-- /btn-group -->
   
-<!--   <div class="btn-group">
-    <button type="button" class="btn btn-secondary">상품정보 관리</button>
-    <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <span class="sr-only">Toggle Dropdown</span>
-    </button>
-    <div class="dropdown-menu">
-	<a class="dropdown-item" href="/deviceType/register">상품등록</a>
-      <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="/deviceType/list">상품 형환보기</a>
-    </div>
-  </div>/btn-group -->
   
   
   <div class="btn-group">
@@ -88,14 +77,14 @@
       <span class="sr-only">Toggle Dropdown</span>
     </button>
     <div class="dropdown-menu">
-	<a class="dropdown-item" href="/sale/saleList">기간별 판매현황</a> <!-- 기기별,날짜별 판매현황. 세부(결재건당 상세내역  -->
-	<a class="dropdown-item" href="/sale/saleList">자판기별 판매현황</a> <!-- 기기별,날짜별 판매현황. 세부(결재건당 상세내역  -->
-	<a class="dropdown-item" href="/deviceType/list">일자별 판매현황</a> <!-- 자판기별  슬롯현황(걸림, 양호, 모터에러, 제고) -->
-	<a class="dropdown-item" href="/deviceType/list">제품별 판매현황</a> <!-- 제품별, 날짜별 판매현황 -->
+	<a class="dropdown-item" href="/sale/machineSaleStatus">자판기 판매현황</a> <!-- 기기별,날짜별 판매현황. 세부(결재건당 상세내역  -->
+	<a class="dropdown-item" href="/sale/eachMachinSaleStatus">자판기별 판매현황</a> <!-- 기기별,날짜별 판매현황. 세부(결재건당 상세내역  -->
+	<a class="dropdown-item" href="/sale/eachMachinSaleStatus">기간별 판매현황</a> <!-- /sale/periodSaleStatus -->
+	<a class="dropdown-item" href="/sale/eachMachinSaleStatus">제품별 판매현황</a> <!-- /sale/eachProductSaleStatus -->
     </div>
   </div><!-- /btn-group -->
   <div class="btn-group">
-    <button type="button" class="btn btn-info">Info</button>
+    <button type="button" class="btn btn-info">자판기 제어</button>
     <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <span class="sr-only">Toggle Dropdown</span>
     </button>
@@ -107,6 +96,7 @@
       <a class="dropdown-item" href="#">Separated link</a>
     </div>
   </div><!-- /btn-group -->
+<!--   
   <div class="btn-group">
     <button type="button" class="btn btn-warning">Warning</button>
     <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -119,7 +109,7 @@
       <div class="dropdown-divider"></div>
       <a class="dropdown-item" href="#">Separated link</a>
     </div>
-  </div><!-- /btn-group -->
+  </div>/btn-group
   <div class="btn-group">
     <button type="button" class="btn btn-danger">Danger</button>
     <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -132,7 +122,8 @@
       <div class="dropdown-divider"></div>
       <a class="dropdown-item" href="#">Separated link</a>
     </div>
-  </div><!-- /btn-group -->
+  </div>/btn-group
+   -->
 </div>
 
 

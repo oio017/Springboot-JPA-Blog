@@ -1,6 +1,7 @@
 package com.cos.blog.controller.api;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,13 +89,15 @@ public class SaleSearchApiController {
 		dailySale.addTotalFailCnt(eachDailySale.getTotalFailCnt());
 	}
     
-@GetMapping({"/sale/saleList"})
-public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
+@GetMapping({"/sale/machineSaleStatus"})
+public String machineSaleStatus(@ModelAttribute CustomSaleStatusDto test, Model model)  {
 		SearchParams params = new SearchParams();
 		VendingMachine vendingMachine =  null;	
 		DailySale dailySale = null;
 		List<Payment> payments= null;;
 		List<VendingMachine> vendingMachines = vendingMachineService.findAll();
+
+		System.out.println("jerry : machineSaleStatus");
 		
 		if (test.getStartDate() == null) {
 			dailySale = vendingStatusService.findByTheRecentDailySale();
@@ -187,7 +191,62 @@ public String index(@ModelAttribute CustomSaleStatusDto test, Model model)  {
 		model.addAttribute("slotNamesArray",  slotNamesArray);
 		model.addAttribute("slotCnt",  vendingMachine.getDeviceType().getTotalslotCnt());
 				
-		return "sale/saleDateVending";
+		return "sale/machineSaleStatus";
 	}
 
+	@SuppressWarnings("unchecked")
+	@GetMapping({"/sale/eachMachinSaleStatus"})
+	public String eachMachinSaleStatus(@ModelAttribute CustomSaleStatusDto test, Model model)  {
+		JSONArray vendingMachineNames = new JSONArray();
+		JSONArray cntPayPerMachine = new JSONArray();
+		JSONArray cntRefundPerMachine = new JSONArray();
+		JSONArray accountPerMachine = new JSONArray();
+		JSONArray accountRefundPerMachine = new JSONArray();
+				
+		System.out.println("jerry : eachMachinSaleStatus");
+		// 모든 자판기에 대한 dailySale 조회 (하루단위)
+		List<VendingMachine> vendingMachines = vendingMachineService.findAll();
+		System.out.println("eachMachinSaleStatus : ");
+		
+		int cntVendingMachine = vendingMachines.size();
+		for (int i = 0; i < cntVendingMachine; i++) {
+			VendingMachine vendingMachine = vendingMachines.get(i); 
+			vendingMachineNames.add(vendingMachine.getMerchantName());
+			 
+			List<DailySale>  dailySales = vendingStatusService.findByTheSelectedDailySales(vendingMachine.getId(), "2021-04-01", "2021-04-03");
+			int cntDailySale = dailySales.size();
+			int cntPay = 0;
+			int cntRefund = 0;
+			int amountPay = 0;
+			int amountRefund = 0;
+			for(int x = 0; x < cntDailySale; x++) {
+				DailySale dailySale = dailySales.get(x);
+				cntPay += dailySale.getTotalCnt();
+				cntRefund += dailySale.getTotalRefudCnt();
+				amountPay += dailySale.getTotalRealAccount();
+				amountRefund += dailySale.getTotalRefudAccount();
+			}
+			cntPayPerMachine.add(cntPay);
+			cntRefundPerMachine.add(cntRefund);
+			accountPerMachine.add(amountPay);
+			accountRefundPerMachine.add(amountRefund);
+			 
+		}
+		
+		System.out.println("vendingMachineNames : " + vendingMachineNames.toString());
+		System.out.println("cntPayPerMachine : " + cntPayPerMachine.toString());
+		System.out.println("accountPerMachine : " + accountPerMachine.toString());
+		// label 자판기 이름 : [ 1500, 1600, 1700, 1750, 1800, 1850, 1900, 1950, 1999, 2050 ]
+		model.addAttribute("vendingMachineNames",  vendingMachineNames.toString());
+		model.addAttribute("cntPayPerMachine",  cntPayPerMachine.toString());
+		model.addAttribute("cntRefundPerMachine",  cntRefundPerMachine.toString());
+		model.addAttribute("accountPerMachine",  accountPerMachine.toString());
+		model.addAttribute("accountRefundPerMachine",  accountRefundPerMachine.toString());
+
+		
+		
+		
+		return "sale/eachMachinSaleStatus";
+		
+	}
 }

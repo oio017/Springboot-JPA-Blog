@@ -28,7 +28,7 @@ public class BoardController {
 	// index로 이동 시 데이타를 가지고 이동 -> Model (ViewResolver 작동) 정보는 request 정보처럼 index 까지 전달됨.
 	public String index(Model model, @PageableDefault(size=10, sort="id", direction=Sort.Direction.DESC) Pageable pageable) { 
 		model.addAttribute("boards", boardService.글목록(pageable)); // Collection Data
-		
+		System.out.println("jerry : index");
 		// /WEB-INF/views/index.jsp
 		return "index";
 	}

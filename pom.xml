@@ -10,9 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cos</groupId>
-	<artifactId>blog</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>blog</name>
+	<artifactId>manager-console</artifactId>
+	<version>0.0.1</version>
+	<name>manager-console</name>
+	<packaging>war</packaging>
 	<description>My first Blog project</description>
 
 	<properties>
@@ -122,6 +123,16 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<!-- jerry exclude properties -->	
+		<resources>
+	         <resource>
+	            <directory>src/main/resources</directory>
+	            <filtering>true</filtering>
+	            <excludes>
+	                <exclude>**/*.yml</exclude>
+	            </excludes>
+	        </resource>
+	    </resources>		
 	</build>
 
 </project>

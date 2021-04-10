@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(principalDetailService).passwordEncoder(encodePWD());
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
