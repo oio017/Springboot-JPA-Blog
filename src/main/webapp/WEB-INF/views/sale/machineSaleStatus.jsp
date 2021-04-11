@@ -78,7 +78,7 @@
 		<div class="portlet-title">
 			<div class="caption">
 				<i class="fa fa-search"></i> <span
-					class="caption-subject font-dark bold">기간/머신별 현황조회</span>
+					class="caption-subject font-dark bold">기간/자판기별 현황조회</span>
 			</div>
 		</div>
 		
@@ -96,7 +96,7 @@
 								<label for="select2-single-input-sm" class="control-label" id="date-label"></label>
 							</c:otherwise>
 						</c:choose>
-						<label for="select2-single-input-sm" class="control-label">기간별 검색</label>
+						<label for="select2-single-input-sm" class="control-label">기간설정</label>
 						<div class="input-group">
 							<div class="page-toolbar ">
 								<%-- style="background-color: #716558;" --%>
@@ -228,20 +228,19 @@
 			<hr />
 			
 			<h6 class="card-text">
-				슬롯별 판매 수량 <br />
-			</h6>
-			<div class="container">
-				<canvas id="cntChart"></canvas>
-			</div>
-
-			<hr />
-			<h6 class="card-text">
 				슬롯별 판매 금액 <br />
 			</h6>
 			<div class="container">
 				<canvas id="amountChart"></canvas>
 			</div>
-			
+
+			<hr />
+			<h6 class="card-text">
+				슬롯별 판매 수량 <br />
+			</h6>
+			<div class="container">
+				<canvas id="cntChart"></canvas>
+			</div>
 			<hr />
 			<h6 class="card-text">
 				걸림 발생 슬롯 <br />

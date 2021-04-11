@@ -21,10 +21,19 @@ let index = {
 			data.startDate = searchReq.startDate;
 			data.endDate = searchReq.endDate;
 
-			var param = "vendingMachine=" + encodeURIComponent(searchReq.vendingMachine) + "&startDate=" + encodeURIComponent(searchReq.startDate) + "&endDate="+encodeURIComponent(searchReq.endDate);
-			var url = '/sale/machineSaleStatus?'+param;
-			console.log(url);
-			window.location = url;
+			var startDate = getStartDate($('#startDate').val());
+			var endDate = getEndDate($('#endDate').val());
+			var isPeriodOk = checkDateGapIfShorterThanOrEqualsToPeriod(startDate, endDate, 1, 'M');
+			if(!isPeriodOk){
+				alert(getMessage('log.search.periodMessage','검색 기간의 최대 범위는 1개월 입니다.'));
+			}
+			else {
+				var param = "vendingMachine=" + encodeURIComponent(searchReq.vendingMachine) + "&startDate=" + encodeURIComponent(searchReq.startDate) + "&endDate="+encodeURIComponent(searchReq.endDate);
+				var url = '/sale/eachMachinSaleStatus?'+param;
+				console.log(url);
+				window.location = url;					
+			}
+			
 			
 			// var xxx = JSON.stringify(data);
 			// alert(xxx);
@@ -34,20 +43,13 @@ let index = {
 			// 	contentType: "application/json",  // ajax 통신으로 보내는 타입
 			// 	data: xxx,
 			// }).done(function(resp) {
-			// 	location.href = "/sale/machineSaleStatus";
+			// 	location.href = "/sale/eachMachinSaleStatus";
 			// }).fail(function(error) {
 			// 	alert(JSON.stringify(error));
 			// });
 			
 			//location.reload();
 		});
-		////////////////////////////////////////////////////////////
-		$('#sel-vending-machine').change(function () {
-			var name = $('#sel-vending-machine').val();
-			//$('#input-vending-machine').val = test;
-			document.getElementById("input-vending-machine").value =name;
-		});
-		////////////////////////////////////////////////////////////
 	}
 	//clickEventInit
 }
@@ -74,7 +76,6 @@ var getQueryData = function () {
 
 	searchReq.startDate=getStartDate(data.startDate);
 	searchReq.endDate=getEndDate(data.endDate);
-	searchReq.vendingMachine = $('#input-vending-machine').val();
 	
 	console.log("search-params : " + searchReq.startDate);
 	return searchReq;
@@ -84,16 +85,14 @@ function makeTable(){
 	var data = new Object;
 
     getQueryData();
-	data.vendingMachine = searchReq.vendingMachine;
     data.startDate=searchReq.startDate;
     data.endDate=searchReq.endDate;
 
 	$.ajax({
-		url: "/sale/machineSaleStatus",
+		url: "/sale/eachMachinSaleStatus",
 		type: "GET",
 		data: data, 
-		success: function(result){
-		
+		success: function(result){		
 		}
 	});
 
@@ -102,11 +101,9 @@ function makeTable(){
         "processing": true,
         "serverSide": true,
         "ajax": {
-        	"url" : "/sale/machineSaleStatus",
+        	"url" : "/sale/eachMachinSaleStatus",
 			"data" : function (data){
                 getQueryData();
-				//data.columns[0].search.value = searchReq.startDate.getTime() + ";" + searchReq.endDate.getTime();
-				data.vendingMachine = searchReq.vendingMachine;
                 data.startDate=searchReq.startDate;
                 data.endDate=searchReq.endDate;
                 console.log(data)
@@ -214,12 +211,11 @@ var InitFunction = function() {
 					////////////////////////////////////////////////////
 					var data = new Object;
 					getQueryData();
-					data.vendingMachine = searchReq.vendingMachine;
 					data.startDate=searchReq.startDate;
 					data.endDate=searchReq.endDate;
 
 					$.ajax({
-						url: "/sale/machineSaleStatus",
+						url: "/sale/eachMachinSaleStatus",
 						type: "GET",
 						dataType: "json",          // ajax 통신으로 받는 타입
 						// contentType: "application/json",  // ajax 통신으로 보내는 타입
@@ -266,11 +262,7 @@ $(document).ready(
 		InitFunction.init();
 		$('#startDate, endDate').change(function() {
 			oTable.draw();
-		});
-
-		//select vendingMachine 초기설정
-		document.getElementById("sel-vending-machine").value =$('#input-vending-machine').val();
-	  
+		});	  
 	}
 );
 // $(document).ready(

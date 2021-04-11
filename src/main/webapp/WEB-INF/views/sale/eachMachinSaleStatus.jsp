@@ -75,7 +75,7 @@
 		<div class="portlet-title">
 			<div class="caption">
 				<i class="fa fa-search"></i> <span
-					class="caption-subject font-dark bold">머신별 현황조회</span>
+					class="caption-subject font-dark bold">자판기별 판매현황 조회</span>
 			</div>
 		</div>
 
@@ -86,13 +86,16 @@
 					<div class="col-md-4">
 						<c:choose>
 							<c:when test="${result.startDate ne null}">
-								<label for="select2-single-input-sm" class="control-label" id="date-label" data-startdate="${result.startDateLong}" data-enddate="${result.endDateLong}"></label>
+								<label for="select2-single-input-sm" class="control-label"
+									id="date-label" data-startdate="${result.startDateLong}"
+									data-enddate="${result.endDateLong}"></label>
 							</c:when>
 							<c:otherwise>
-								<label for="select2-single-input-sm" class="control-label" id="date-label"></label>
+								<label for="select2-single-input-sm" class="control-label"
+									id="date-label"></label>
 							</c:otherwise>
 						</c:choose>
-						<label for="select2-single-input-sm" class="control-label">기간별 검색</label>
+						<label for="select2-single-input-sm" class="control-label">기간설정</label>
 						<div class="input-group">
 							<div class="page-toolbar ">
 								<%-- style="background-color: #716558;" --%>
@@ -105,24 +108,19 @@
 										class="fa fa-angle-down"></i>
 								</div>
 							</div>
+							<div>
+								<input type="hidden" name="startDate" id="startDate"> <input
+									type="hidden" name="endDate" id="endDate"> <span
+									class="input-group-btn btn-right">
+									<button class="btn green-haze yellow" type="button"
+										id="detection-search-button" name="appName"
+										style="margin-left: 10px">
+										검색 <i class="fa fa-search"></i>
+									</button>
+								</span>
+							</div>
 						</div>
 					</div>
-
-					<div class="col-md-4">
-						<div class="row">
-							<input type="hidden" name="startDate" id="startDate">
-							<input type="hidden" name="endDate" id="endDate"> 
-							
-							<span class="input-group-btn btn-right">
-								<button class="btn green-haze yellow" type="button" 
-									id="detection-search-button" name="appName"
-									style="margin-left: 10px">
-									검색 <i class="fa fa-search"></i>
-								</button>
-							</span>
-						</div>
-					</div>
-
 				</div>
 			</div>
 		</form>
@@ -130,8 +128,7 @@
 	
 	<br />
 	<div>
-		Merchant Code : <span id="id"><i>${dailySale.vendingMachine.merchantName}
-		</i></span><br /> Date : <span><I>${dailySale.date} </I></span>
+		Date : <span><I>${result.startDateString} ~  ${result.endDateString}</I></span>
 	</div>
 
 	<div class="card bg-light">
@@ -152,30 +149,22 @@
 				</div>
 			</div>
 			<hr />
-			
-				
 					<h6 class="card-text">
-						자판기별 결재/환불 건수<br />
+						자판기별 결재/환불 금액 <br />
 					</h6>
 					<div class="container">
-						<canvas id="cnt-chart-line" width="299" height="200"
-							class="chartjs-render-monitor"
-							style="display: block; width: 299px; height: 200px;">
+						<canvas id="amount-chart-line"  class="chartjs-render-monitor">
 						</canvas>
 					</div>
 					
 					<hr />
 					<h6 class="card-text">
-						자판기별 결재/환불 금액 <br />
+						자판기별 결재/환불 건수<br />
 					</h6>
 					<div class="container">
-						<canvas id="amount-chart-line" width="299" height="200"
-							class="chartjs-render-monitor"
-							style="display: block; width: 299px; height: 200px;">
+						<canvas id="cnt-chart-line" >
 						</canvas>
 					</div>
-								
-
 		</div>
 	</div>
 </div>
@@ -219,7 +208,7 @@
 						labels : ${vendingMachineNames},
 						datasets : [
 								{
-									data :  ${accountPerMachine}, // [ 86, 114, 106, 106, 107, 111, 133,221, 783, 2478 ],
+									data :  ${accountRealPerMachine}, // [ 86, 114, 106, 106, 107, 111, 133,221, 783, 2478 ],
 									label : "결재금액",
 									borderColor :  'rgba(255, 206, 86, 1)',
 									backgroundColor : 'rgba(255, 206, 86, 0.2)',

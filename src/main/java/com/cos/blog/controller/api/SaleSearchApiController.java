@@ -200,50 +200,102 @@ public String machineSaleStatus(@ModelAttribute CustomSaleStatusDto test, Model 
 		JSONArray vendingMachineNames = new JSONArray();
 		JSONArray cntPayPerMachine = new JSONArray();
 		JSONArray cntRefundPerMachine = new JSONArray();
+		JSONArray accountRealPerMachine = new JSONArray();
 		JSONArray accountPerMachine = new JSONArray();
 		JSONArray accountRefundPerMachine = new JSONArray();
-				
+		SearchParams params = new SearchParams();
+		DailySale dailySale = null;
+		String startDate = null;
+		String endDate = null;
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		if (test.getStartDate() == null) {			
+			dailySale = vendingStatusService.findByTheRecentDailySale();
+	        startDate = dailySale.getDate();
+	        endDate = dailySale.getDate();
+		}
+		else {
+			startDate = dateFormat.format(test.getStartDate());
+	        endDate = dateFormat.format(test.getEndDate());		
+	        
+	        // TODO
+			System.out.println("getVendingMachine : " + test.getVendingMachine());
+			params.setVendingMachine(test.getVendingMachine());
+			System.out.println("getEndDate : " + test.getEndDate());
+			params.setEndDateLong(test.getEndDate().getTime());
+			System.out.println("getTime : " + test.getEndDate().getTime());
+			params.setStartDateLong(test.getStartDate().getTime());
+			System.out.println("getEndDate : " + test.getEndDate());
+			params.setEndDate(test.getEndDate());
+			params.setStartDate(test.getStartDate());					
+		}
+		
+        params.setStartDateString(startDate);
+        params.setEndDateString(endDate);
+		model.addAttribute("result", params);
+		
 		System.out.println("jerry : eachMachinSaleStatus");
 		// 모든 자판기에 대한 dailySale 조회 (하루단위)
 		List<VendingMachine> vendingMachines = vendingMachineService.findAll();
 		System.out.println("eachMachinSaleStatus : ");
+
+		int totalCntPay = 0;
+		int totalCntRefund = 0;
+		int totalAmountPay = 0;
+		int totalAmountRealPay = 0;
+		int totalAmountRefund = 0;
 		
 		int cntVendingMachine = vendingMachines.size();
 		for (int i = 0; i < cntVendingMachine; i++) {
 			VendingMachine vendingMachine = vendingMachines.get(i); 
 			vendingMachineNames.add(vendingMachine.getMerchantName());
 			 
-			List<DailySale>  dailySales = vendingStatusService.findByTheSelectedDailySales(vendingMachine.getId(), "2021-04-01", "2021-04-03");
+			List<DailySale>  dailySales = vendingStatusService.findByTheSelectedDailySales(vendingMachine.getId(), startDate, endDate);
 			int cntDailySale = dailySales.size();
 			int cntPay = 0;
 			int cntRefund = 0;
 			int amountPay = 0;
+			int amountRealPay = 0;
 			int amountRefund = 0;
 			for(int x = 0; x < cntDailySale; x++) {
-				DailySale dailySale = dailySales.get(x);
-				cntPay += dailySale.getTotalCnt();
-				cntRefund += dailySale.getTotalRefudCnt();
-				amountPay += dailySale.getTotalRealAccount();
-				amountRefund += dailySale.getTotalRefudAccount();
+				DailySale ds = dailySales.get(x);
+				cntPay += ds.getTotalCnt();
+				cntRefund += ds.getTotalRefudCnt();
+				amountPay += ds.getTotalAccount();
+				amountRealPay += ds.getTotalRealAccount();
+				amountRefund += ds.getTotalRefudAccount();
 			}
 			cntPayPerMachine.add(cntPay);
 			cntRefundPerMachine.add(cntRefund);
 			accountPerMachine.add(amountPay);
+			accountRealPerMachine.add(amountRealPay);
 			accountRefundPerMachine.add(amountRefund);
 			 
+			totalCntPay += cntPay;
+			totalCntRefund += cntRefund;
+			totalAmountPay += amountPay;
+			totalAmountRealPay += amountRealPay;
+			totalAmountRefund += amountRefund;
 		}
 		
 		System.out.println("vendingMachineNames : " + vendingMachineNames.toString());
 		System.out.println("cntPayPerMachine : " + cntPayPerMachine.toString());
+		System.out.println("accountRealPerMachine : " + accountRealPerMachine.toString());
 		System.out.println("accountPerMachine : " + accountPerMachine.toString());
 		// label 자판기 이름 : [ 1500, 1600, 1700, 1750, 1800, 1850, 1900, 1950, 1999, 2050 ]
 		model.addAttribute("vendingMachineNames",  vendingMachineNames.toString());
 		model.addAttribute("cntPayPerMachine",  cntPayPerMachine.toString());
 		model.addAttribute("cntRefundPerMachine",  cntRefundPerMachine.toString());
-		model.addAttribute("accountPerMachine",  accountPerMachine.toString());
+		model.addAttribute("accountRealPerMachine",  accountRealPerMachine.toString());
 		model.addAttribute("accountRefundPerMachine",  accountRefundPerMachine.toString());
 
-		
+		DailySale ds = new DailySale();
+		ds.setTotalCnt(totalCntPay);
+		ds.setTotalRefudCnt(totalCntRefund);
+		ds.setTotalAccount(totalAmountPay);
+		ds.setTotalRealAccount(totalAmountRealPay);
+		ds.setTotalRefudAccount(totalAmountRefund);
+		model.addAttribute("dailySale",  ds);
 		
 		
 		return "sale/eachMachinSaleStatus";
