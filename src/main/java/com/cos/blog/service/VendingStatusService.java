@@ -79,6 +79,11 @@ public class VendingStatusService {
 		return dailySaleRepository.findByTheSelectedDailySales(vendingMachine, startDate, endDate);
 	}
 	
+	@Transactional(readOnly = true)
+	public DailySale findByTheSelectedDailySale(int vendingMachine, String startDate) {
+		return dailySaleRepository.findByTheSelectedDailySale(vendingMachine, startDate);
+	}
+	
 	
 	
 	@Transactional // DB(CRUD) 모든 행위가  정상적으로 처리되어야 성공처리. 

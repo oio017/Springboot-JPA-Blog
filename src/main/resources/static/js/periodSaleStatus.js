@@ -29,10 +29,11 @@ let index = {
 			}
 			else {
 				var param = "vendingMachine=" + encodeURIComponent(searchReq.vendingMachine) + "&startDate=" + encodeURIComponent(searchReq.startDate) + "&endDate="+encodeURIComponent(searchReq.endDate);
-				var url = '/sale/machineSaleStatus?'+param;
+				var url = '/sale/periodSaleStatus?'+param;
 				console.log(url);
 				window.location = url;
 			}
+			
 			// var xxx = JSON.stringify(data);
 			// alert(xxx);
 			// $.ajax({
@@ -41,7 +42,7 @@ let index = {
 			// 	contentType: "application/json",  // ajax 통신으로 보내는 타입
 			// 	data: xxx,
 			// }).done(function(resp) {
-			// 	location.href = "/sale/machineSaleStatus";
+			// 	location.href = "/sale/periodSaleStatus";
 			// }).fail(function(error) {
 			// 	alert(JSON.stringify(error));
 			// });
@@ -96,7 +97,7 @@ function makeTable(){
     data.endDate=searchReq.endDate;
 
 	$.ajax({
-		url: "/sale/machineSaleStatus",
+		url: "/sale/periodSaleStatus",
 		type: "GET",
 		data: data, 
 		success: function(result){
@@ -109,7 +110,7 @@ function makeTable(){
         "processing": true,
         "serverSide": true,
         "ajax": {
-        	"url" : "/sale/machineSaleStatus",
+        	"url" : "/sale/periodSaleStatus",
 			"data" : function (data){
                 getQueryData();
 				//data.columns[0].search.value = searchReq.startDate.getTime() + ";" + searchReq.endDate.getTime();
@@ -226,7 +227,7 @@ var InitFunction = function() {
 					data.endDate=searchReq.endDate;
 
 					$.ajax({
-						url: "/sale/machineSaleStatus",
+						url: "/sale/periodSaleStatus",
 						type: "GET",
 						dataType: "json",          // ajax 통신으로 받는 타입
 						// contentType: "application/json",  // ajax 통신으로 보내는 타입

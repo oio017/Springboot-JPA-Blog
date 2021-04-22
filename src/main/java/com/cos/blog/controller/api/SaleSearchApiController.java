@@ -297,8 +297,180 @@ public String machineSaleStatus(@ModelAttribute CustomSaleStatusDto test, Model 
 		ds.setTotalRefudAccount(totalAmountRefund);
 		model.addAttribute("dailySale",  ds);
 		
-		
 		return "sale/eachMachinSaleStatus";
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GetMapping({"/sale/periodSaleStatus"})
+	public String periodSaleStatus(@ModelAttribute CustomSaleStatusDto test, Model model)  {
+		String startDate = null;
+		String endDate = null;		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SearchParams params = new SearchParams();	
+		DailySale dailySale = null;
+		List<VendingMachine> vendingMachines = new ArrayList<VendingMachine>();
+
+		JSONArray vendingMachineNames = new JSONArray();
+		JSONArray period = new JSONArray();
+		JSONArray dateName = new JSONArray();
+		JSONArray saleAccount = new JSONArray();
+		JSONArray saleCnt = new JSONArray();
+		JSONArray jammedCnt = new JSONArray();
+		JSONArray bgColor = new JSONArray();
+		JSONArray bdColor = new JSONArray();
+		String[] bg = {"rgba(255, 99, 132, 0.2)","rgba(54, 162, 235, 0.2)","rgba(255, 206, 86, 0.2)","rgba(75, 192, 192, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(255, 159, 64, 0.2)"};
+		String[] bd = {"rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)"};
+
+		System.out.println("jerry : periodSaleStatus");
+//		chart
+//			backgroundColor
+//			borderColor
+//			amount
+//			saleCnt
+//			jamCnt
+
+
+		List<Date> dates = null;
+		if (test.getStartDate() == null) {
+			// dates 구하기
+			Date startDay = new Date ();
+			Date endDay = new Date ();
+			endDay.setTime ( endDay.getTime ( ) - ( (long) 1000 * 60 * 60 * 24 ) );
+			startDay.setTime ( endDay.getTime ( ) - ( (long) 10000 * 60 * 60 * 24 ) );
+			startDate = dateFormat.format(startDay);
+	        endDate = dateFormat.format(endDay);
+	        
+			dates = getDaysBetweenDates(startDay, endDay);
+			dates.forEach(d ->{
+				System.out.println("date : " + d.getDate());
+				System.out.println("date: " + dateFormat.format(d));
+				period.add(d.getDate());
+				dateName.add(dateFormat.format(d));
+			});
+			System.out.println("period : " + 	period.toString());
+			vendingMachines = vendingMachineService.findAll();
+			model.addAttribute("vendingMachineName",  "ALL");
+		}
+		else {
+			System.out.println("test : " + test.toString());
+	        startDate = dateFormat.format(test.getStartDate());
+	        endDate = dateFormat.format(test.getEndDate());
+	        
+	        // dates 구하기
+			dates = getDaysBetweenDates(test.getStartDate(), test.getEndDate());
+			dates.forEach(d ->{
+				System.out.println("getDate : " + d.getDate());
+				System.out.println("date: " + dateFormat.format(d));
+				period.add(d.getDate());
+				dateName.add(dateFormat.format(d));
+			});
+			System.out.println("period : " + 	period.toString());
+			
+			if (test.getVendingMachine().equals("ALL")) {
+				model.addAttribute("vendingMachineName",  "ALL");
+				vendingMachines = vendingMachineService.findAll();
+			}
+			else {
+				VendingMachine vm =  vendingMachineService.findByMerchantName(test.getVendingMachine());
+		        System.out.println("The selected vendingMachine: " + vm.getMerchantName());
+		        vendingMachines.add(vm);
+		        
+		        model.addAttribute("vendingMachineName",  vm.getMerchantName());
+			}
+			
+			System.out.println("getVendingMachine : " + test.getVendingMachine());
+			params.setVendingMachine(test.getVendingMachine());
+			System.out.println("getEndDate : " + test.getEndDate());
+			params.setEndDateLong(test.getEndDate().getTime());
+			System.out.println("getTime : " + test.getEndDate().getTime());
+			params.setStartDateLong(test.getStartDate().getTime());
+			System.out.println("getEndDate : " + test.getEndDate());
+			
+			params.setEndDate(test.getEndDate());
+			params.setStartDate(test.getStartDate());	
+		}
+
+		int cntVendingMachine = vendingMachines.size();
+		int cntDate = dates.size();
+		int totalCntPay = 0;
+		int totalCntRefund = 0;
+		int totalAmountPay = 0;
+		int totalAmountRealPay = 0;
+		int totalAmountRefund = 0;
 		
+		for(int i =0 ; i <  cntDate; i++) {
+			int cntPay = 0;
+			int cntRefund = 0;
+			int amountPay = 0;
+			int amountRealPay = 0;
+			int amountRefund = 0;
+			for (int x = 0; x < cntVendingMachine; x++) {
+				VendingMachine vendingMachine = vendingMachines.get(x);
+
+				DailySale  ds = vendingStatusService.findByTheSelectedDailySale(vendingMachine.getId(), (String)dateName.get(i));
+				if (ds != null) {
+					cntPay += ds.getTotalCnt();
+					cntRefund += ds.getTotalRefudCnt();
+					amountPay += ds.getTotalAccount();
+					amountRealPay += ds.getTotalRealAccount();
+					amountRefund += ds.getTotalRefudAccount();
+				}
+			}			
+			
+			saleAccount.add(amountRealPay);
+			saleCnt.add(cntPay);
+			jammedCnt.add(cntRefund);
+
+			totalCntPay += cntPay;
+			totalCntRefund += cntRefund;
+			totalAmountPay += amountPay;
+			totalAmountRealPay += amountRealPay;
+			totalAmountRefund += amountRefund;
+			
+			bgColor.add(bg[i%6]);
+			bdColor.add(bd[i%6]);
+		}
+        //////////////
+		DailySale ds = new DailySale();
+		ds.setTotalCnt(totalCntPay);
+		ds.setTotalRefudCnt(totalCntRefund);
+		ds.setTotalAccount(totalAmountPay);
+		ds.setTotalRealAccount(totalAmountRealPay);
+		ds.setTotalRefudAccount(totalAmountRefund);
+		ds.setDate(startDate + "~" + endDate);
+		model.addAttribute("dailySale",  ds);
+		model.addAttribute("result", params);
+		
+		model.addAttribute("saleAccount",  saleAccount.toString());
+		System.out.println("saleAccount: " + saleAccount.toString());
+		model.addAttribute("saleCnt",  saleCnt.toString());
+		System.out.println("saleCnt: " + saleCnt.toString());
+		model.addAttribute("jammedCnt",  jammedCnt.toString());
+		System.out.println("jammedCnt: " + jammedCnt.toString());
+		model.addAttribute("bgColor",  bgColor.toString());
+		System.out.println("bgColor: " + bgColor.toString());
+		model.addAttribute("bdColor",  bdColor.toString());
+		System.out.println("bdColor: " + bdColor.toString());
+		model.addAttribute("period",  period.toString());
+		System.out.println("period: " + period.toString());
+		
+		vendingMachineNames.add("ALL");
+		cntVendingMachine = vendingMachines.size();
+		if (cntVendingMachine == 1)
+			vendingMachines = vendingMachineService.findAll();
+		cntVendingMachine = vendingMachines.size();
+		for (int x = 0; x < cntVendingMachine; x++) {
+			VendingMachine vendingMachine = vendingMachines.get(x);
+			vendingMachineNames.add(vendingMachine.getMerchantName());
+		}
+		model.addAttribute("vendingMachineNames",  vendingMachineNames);
+		
+		return "sale/periodSaleStatus";
+	}
+	
+	@GetMapping({"/sale/eachProductSaleStatus"})
+	public String eachProductSaleStatus(@ModelAttribute CustomSaleStatusDto test, Model model)  {
+		
+		return "sale/eachProductSaleStatus";
 	}
 }

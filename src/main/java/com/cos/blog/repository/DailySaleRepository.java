@@ -27,4 +27,7 @@ public interface DailySaleRepository extends JpaRepository<DailySale, Integer>{
 	@Query(value="SELECT * FROM blog.DailySale where vendingMachineId = ?1 and date >= ?2 and date <= ?3", nativeQuery = true)
 	List<DailySale> findByTheSelectedDailySales(int vendingMachine, String startDate, String endDate);
 	
+	@Query(value="SELECT * FROM blog.DailySale where vendingMachineId = ?1 and date = ?2", nativeQuery = true)
+	DailySale findByTheSelectedDailySale(int vendingMachine, String startDate);
+	
 }

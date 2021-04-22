@@ -79,8 +79,8 @@
     <div class="dropdown-menu">
 	<a class="dropdown-item" href="/sale/machineSaleStatus">자판기 판매현황</a> <!-- 기기별,날짜별 판매현황. 세부(결재건당 상세내역  -->
 	<a class="dropdown-item" href="/sale/eachMachinSaleStatus">자판기별 판매현황</a> <!-- 기기별,날짜별 판매현황. 세부(결재건당 상세내역  -->
-	<a class="dropdown-item" href="/sale/eachMachinSaleStatus">기간별 판매현황</a> <!-- /sale/periodSaleStatus -->
-	<a class="dropdown-item" href="/sale/eachMachinSaleStatus">제품별 판매현황</a> <!-- /sale/eachProductSaleStatus -->
+	<a class="dropdown-item" href="/sale/periodSaleStatus">일자별 판매현황</a> <!-- /sale/periodSaleStatus -->
+	<a class="dropdown-item" href="/sale/eachProductSaleStatus">제품별 판매현황</a> <!-- /sale/eachProductSaleStatus -->
     </div>
   </div><!-- /btn-group -->
   <div class="btn-group">

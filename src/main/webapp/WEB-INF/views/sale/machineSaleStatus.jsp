@@ -78,7 +78,7 @@
 		<div class="portlet-title">
 			<div class="caption">
 				<i class="fa fa-search"></i> <span
-					class="caption-subject font-dark bold">기간/자판기별 현황조회</span>
+					class="caption-subject font-dark bold">자판기 판매현황 조회</span>
 			</div>
 		</div>
 		
